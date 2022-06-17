@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="sand">
+
+    <!-- Base Ignition Gazebo plugins -->
+    <plugin
+        filename="ignition-gazebo-physics-system"
+        name="ignition::gazebo::systems::Physics">
+    </plugin>
+    <plugin
+        filename="ignition-gazebo-user-commands-system"
+        name="ignition::gazebo::systems::UserCommands">
+    </plugin>
+    <plugin
+        filename="ignition-gazebo-scene-broadcaster-system"
+        name="ignition::gazebo::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+        filename="ignition-gazebo-sensors-system"
+        name="ignition::gazebo::systems::Sensors">
+      <render_engine>ogre</render_engine>
+    </plugin>
+
+    <!-- IMU plugin manages all IMU sensors -->
+    <plugin
+        filename="libignition-gazebo-imu-system.so"
+        name="ignition::gazebo::systems::Imu">
+    </plugin>
+
+    <!-- Buoyancy plugin manages buoyancy for all models -->
+    <plugin
+        filename="ignition-gazebo-buoyancy-system"
+        name="ignition::gazebo::systems::Buoyancy">
+      <!-- Fluid density is 1 (air) above 0 and 1000 (water) below 0 -->
+      <graded_buoyancy>
+        <default_density>1000</default_density>
+        <density_change>
+          <above_depth>0</above_depth>
+          <density>1</density>
+        </density_change>
+      </graded_buoyancy>
+      <!-- Enable by model name -->
+      <enable>orca</enable>
+    </plugin>
+
+    <include>
+      <uri>https://fuel.ignitionrobotics.org/1.0/OpenRobotics/models/Sun</uri>
+    </include>
+
+    <include>
+     <uri>model://sand_heightmap</uri>
+     <pose>0 7 -10 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://orca</uri>
+      <pose>0 0 -0.2 0 0 0</pose>
+    </include>
+
+    <include>
+     <uri>model://axes</uri>
+     <pose>0 0 0.2 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>

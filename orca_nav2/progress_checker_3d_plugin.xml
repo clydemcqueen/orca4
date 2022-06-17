@@ -1,0 +1,6 @@
+<library path="progress_checker_3d">
+  <class type="orca_nav2::ProgressChecker3D" base_class_type="nav2_core::ProgressChecker">
+    <description>3D progress checker.</description>
+  </class>
+</library>
+

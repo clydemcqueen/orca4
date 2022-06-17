@@ -1,0 +1,33 @@
+# TODO(clyde): can I force mavros to use RELIABLE? This would simplify things
+
+/mavros/battery:
+  reliability: best_effort
+  history: keep_all
+
+/mavros/local_position/accel:
+  reliability: best_effort
+  history: keep_all
+
+/mavros/local_position/odom:
+  reliability: best_effort
+  history: keep_all
+
+/mavros/local_position/pose:
+  reliability: best_effort
+  history: keep_all
+
+/mavros/local_position/velocity_body:
+  reliability: best_effort
+  history: keep_all
+
+/mavros/setpoint_position/global:
+  reliability: best_effort
+  history: keep_all
+
+/mavros/setpoint_position/global_to_local:
+  reliability: best_effort
+  history: keep_all
+
+/mavros/setpoint_position/local:
+  reliability: best_effort
+  history: keep_all

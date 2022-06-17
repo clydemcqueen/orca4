@@ -1,0 +1,10 @@
+# Goal
+uint8 ORCA_MODE_DISARMED = 1
+uint8 ORCA_MODE_ROV = 2
+uint8 ORCA_MODE_AUV = 3
+
+uint8 target_mode
+---
+# No result
+---
+# No feedback

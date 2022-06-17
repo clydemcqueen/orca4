@@ -1,0 +1,6 @@
+<library path="pure_pursuit_controller_3d">
+    <class type="orca_nav2::PurePursuitController3D" base_class_type="nav2_core::Controller">
+        <description>3D pure pursuit controller with acceleration limits.</description>
+    </class>
+</library>
+

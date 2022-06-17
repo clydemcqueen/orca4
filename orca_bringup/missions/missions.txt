@@ -1,0 +1,54 @@
+# Example missions
+
+# The poses here work well if 2 things are true:
+# 1. the world file includes the sand_heightmap at {xyz: {0, 7, -10}, rpy: {0, 0, 0}}
+# 2. the first pose drops to xyz: {0, 0, -7} to get a good view of the sand_heightmap
+
+# Simple launch
+ros2 launch orca_bringup sim_launch.py gzclient:=False
+
+# Disarm
+ros2 action send_goal /set_target_mode orca_msgs/action/TargetMode "{target_mode: 1}"
+
+# ROV mode
+ros2 action send_goal /set_target_mode orca_msgs/action/TargetMode "{target_mode: 2}"
+
+# AUV mode
+ros2 action send_goal /set_target_mode orca_msgs/action/TargetMode "{target_mode: 3}"
+
+# Drop to the 3m above the seafloor and loop around
+ros2 action send_goal /follow_waypoints nav2_msgs/action/FollowWaypoints "{poses: [\
+{header: {frame_id: 'map'}, pose: {position: {x: 0, y: 0, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 20, y: -13, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 10, y: -23, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: -10, y: -8, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 0, y: 0, z: -7}}},\
+]}"
+
+# Same as above, but 2 times around, this always causes a loop closure
+ros2 action send_goal /follow_waypoints nav2_msgs/action/FollowWaypoints "{poses: [\
+{header: {frame_id: 'map'}, pose: {position: {x: 0, y: 0, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 20, y: -13, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 10, y: -23, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: -10, y: -8, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 0, y: 0, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 20, y: -13, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 10, y: -23, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: -10, y: -8, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 0, y: 0, z: -7}}},\
+]}"
+
+# Mow the lawn, this causes loop closure in the last step
+ros2 action send_goal /follow_waypoints nav2_msgs/action/FollowWaypoints "{poses: [\
+{header: {frame_id: 'map'}, pose: {position: {x: 0, y: 0, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 20, y: -13, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 17.5, y: -15.5, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: -2.5, y: -0.5, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: -5, y: -3, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 15, y: -18, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 12.5, y: -20.5, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: -7.5, y: -5.5, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: -10, y: -8, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 10, y: -23, z: -7}}},\
+{header: {frame_id: 'map'}, pose: {position: {x: 0, y: 0, z: -7}}},\
+]}"

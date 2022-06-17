@@ -1,0 +1,22 @@
+<!--
+  A simple behavior tree that replans at 1Hz. Recovery consists of waiting (drifting while hovering)
+  for a few seconds. Orca4 doesn't use costmaps, so there's no need to clear them.
+
+  Starting point: navigate_w_replanning_and_recovery.xml
+-->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <RecoveryNode number_of_retries="6" name="NavigateRecovery">
+      <PipelineSequence name="NavigateWithReplanning">
+        <RateController hz="1.0">
+          <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
+        </RateController>
+        <FollowPath path="{path}" controller_id="FollowPath" goal_checker_id="goal_checker"/>
+      </PipelineSequence>
+      <ReactiveFallback name="RecoveryFallback">
+        <GoalUpdated/>
+        <Wait wait_duration="5"/>
+      </ReactiveFallback>
+    </RecoveryNode>
+  </BehaviorTree>
+</root>
