@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <sdf version="1.6">
-  <model name="orca">
+  <model name="orca4">
     <pose>0 0 0 0 0 0</pose>
 
     <!-- BlueROV2 thruster reference: http://www.ardusub.com/introduction/features.html -->
@@ -66,7 +66,7 @@
 
     <!-- Hydrodynamics plugin -->
     <plugin
-        filename="ignition-gazebo-hydrodynamics-system"
+        filename="gz-sim-hydrodynamics-system"
         name="ignition::gazebo::systems::Hydrodynamics">
       <link_name>base_link</link_name>
       <water_density>1000</water_density>
@@ -364,9 +364,9 @@
     </joint>
 
     <plugin
-        filename="ignition-gazebo-thruster-system"
+        filename="gz-sim-thruster-system"
         name="ignition::gazebo::systems::Thruster">
-      <namespace>orca</namespace>
+      <namespace>orca4</namespace>
       <joint_name>thruster1_joint</joint_name>
       <thrust_coefficient>0.02</thrust_coefficient>
       <fluid_density>1000</fluid_density>
@@ -376,9 +376,9 @@
     </plugin>
 
     <plugin
-        filename="ignition-gazebo-thruster-system"
+        filename="gz-sim-thruster-system"
         name="ignition::gazebo::systems::Thruster">
-      <namespace>orca</namespace>
+      <namespace>orca4</namespace>
       <joint_name>thruster2_joint</joint_name>
       <thrust_coefficient>0.02</thrust_coefficient>
       <fluid_density>1000</fluid_density>
@@ -388,9 +388,9 @@
     </plugin>
 
     <plugin
-        filename="ignition-gazebo-thruster-system"
+        filename="gz-sim-thruster-system"
         name="ignition::gazebo::systems::Thruster">
-      <namespace>orca</namespace>
+      <namespace>orca4</namespace>
       <joint_name>thruster3_joint</joint_name>
       <!-- Reverse spin to balance torque -->
       <thrust_coefficient>-0.02</thrust_coefficient>
@@ -401,9 +401,9 @@
     </plugin>
 
     <plugin
-        filename="ignition-gazebo-thruster-system"
+        filename="gz-sim-thruster-system"
         name="ignition::gazebo::systems::Thruster">
-      <namespace>orca</namespace>
+      <namespace>orca4</namespace>
       <joint_name>thruster4_joint</joint_name>
       <!-- Reverse spin to balance torque -->
       <thrust_coefficient>-0.02</thrust_coefficient>
@@ -414,9 +414,9 @@
     </plugin>
 
     <plugin
-        filename="ignition-gazebo-thruster-system"
+        filename="gz-sim-thruster-system"
         name="ignition::gazebo::systems::Thruster">
-      <namespace>orca</namespace>
+      <namespace>orca4</namespace>
       <joint_name>thruster5_joint</joint_name>
       <thrust_coefficient>0.02</thrust_coefficient>
       <fluid_density>1000</fluid_density>
@@ -426,9 +426,9 @@
     </plugin>
 
     <plugin
-        filename="ignition-gazebo-thruster-system"
+        filename="gz-sim-thruster-system"
         name="ignition::gazebo::systems::Thruster">
-      <namespace>orca</namespace>
+      <namespace>orca4</namespace>
       <joint_name>thruster6_joint</joint_name>
       <!-- Reverse spin to balance torque -->
       <thrust_coefficient>-0.02</thrust_coefficient>
@@ -462,7 +462,7 @@
         <servo_min>1100</servo_min>
         <servo_max>1900</servo_max>
         <type>COMMAND</type>
-        <cmd_topic>/model/orca/joint/thruster1_joint/cmd_thrust</cmd_topic>
+        <cmd_topic>/model/orca4/joint/thruster1_joint/cmd_thrust</cmd_topic>
         <offset>-0.5</offset>
         <multiplier>100</multiplier>
       </control>
@@ -471,7 +471,7 @@
         <servo_min>1100</servo_min>
         <servo_max>1900</servo_max>
         <type>COMMAND</type>
-        <cmd_topic>/model/orca/joint/thruster2_joint/cmd_thrust</cmd_topic>
+        <cmd_topic>/model/orca4/joint/thruster2_joint/cmd_thrust</cmd_topic>
         <offset>-0.5</offset>
         <multiplier>100</multiplier>
       </control>
@@ -480,7 +480,7 @@
         <servo_min>1100</servo_min>
         <servo_max>1900</servo_max>
         <type>COMMAND</type>
-        <cmd_topic>/model/orca/joint/thruster3_joint/cmd_thrust</cmd_topic>
+        <cmd_topic>/model/orca4/joint/thruster3_joint/cmd_thrust</cmd_topic>
         <offset>-0.5</offset>
         <multiplier>100</multiplier>
       </control>
@@ -489,7 +489,7 @@
         <servo_min>1100</servo_min>
         <servo_max>1900</servo_max>
         <type>COMMAND</type>
-        <cmd_topic>/model/orca/joint/thruster4_joint/cmd_thrust</cmd_topic>
+        <cmd_topic>/model/orca4/joint/thruster4_joint/cmd_thrust</cmd_topic>
         <offset>-0.5</offset>
         <multiplier>100</multiplier>
       </control>
@@ -498,7 +498,7 @@
         <servo_min>1100</servo_min>
         <servo_max>1900</servo_max>
         <type>COMMAND</type>
-        <cmd_topic>/model/orca/joint/thruster5_joint/cmd_thrust</cmd_topic>
+        <cmd_topic>/model/orca4/joint/thruster5_joint/cmd_thrust</cmd_topic>
         <offset>-0.5</offset>
         <multiplier>100</multiplier>
       </control>
@@ -507,7 +507,7 @@
         <servo_min>1100</servo_min>
         <servo_max>1900</servo_max>
         <type>COMMAND</type>
-        <cmd_topic>/model/orca/joint/thruster6_joint/cmd_thrust</cmd_topic>
+        <cmd_topic>/model/orca4/joint/thruster6_joint/cmd_thrust</cmd_topic>
         <offset>-0.5</offset>
         <multiplier>100</multiplier>
       </control>
@@ -536,7 +536,7 @@
           </image>
           <clip>
             <near>0.2</near>
-            <far>4</far>
+            <far>12</far>
           </clip>
         </camera>
         <always_on>1</always_on>
@@ -586,7 +586,7 @@
           </image>
           <clip>
             <near>0.2</near>
-            <far>4</far>
+            <far>12</far>
           </clip>
         </camera>
         <always_on>1</always_on>
@@ -616,10 +616,10 @@
 
     <!-- Publish the ground-truth pose for rviz -->
     <plugin
-        filename="ignition-gazebo-odometry-publisher-system"
-        name="ignition::gazebo::systems::OdometryPublisher">
+        filename="gz-sim-odometry-publisher-system"
+        name="gz::sim::systems::OdometryPublisher">
       <odom_frame>map</odom_frame>
-      <robot_base_frame>orca</robot_base_frame>
+      <robot_base_frame>orca4</robot_base_frame>
       <dimensions>3</dimensions>
     </plugin>
 

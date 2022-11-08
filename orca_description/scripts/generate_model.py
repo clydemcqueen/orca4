@@ -28,7 +28,7 @@ Generate the model.sdf file by substituting strings of the form "@foo" with calc
 The SDF file uses the ArduPilotPlugin COMMAND control method; this sends commands to a specified
 ign-transport topic rather than directly controlling a joint.
 
-We use the COMMAND method to send commands to the Ignition Gazebo ThrusterPlugin. The ThrusterPlugin
+We use the COMMAND method to send commands to the Gazebo Sim ThrusterPlugin. The ThrusterPlugin
 supports 2 control methods:
       control thrust via /cmd_thrust
       control angular velocity via /cmd_vel
@@ -116,12 +116,12 @@ use_angvel_cmd = False
 # Set by update_globals()
 cw_control_multiplier = 0   # Thrusters 3, 4 and 6
 ccw_control_multiplier = 0  # Thrusters 1, 2 and 5
-thruster1_topic = "/model/orca/joint/thruster1_joint/cmd_"
-thruster2_topic = "/model/orca/joint/thruster2_joint/cmd_"
-thruster3_topic = "/model/orca/joint/thruster3_joint/cmd_"
-thruster4_topic = "/model/orca/joint/thruster4_joint/cmd_"
-thruster5_topic = "/model/orca/joint/thruster5_joint/cmd_"
-thruster6_topic = "/model/orca/joint/thruster6_joint/cmd_"
+thruster1_topic = "/model/orca4/joint/thruster1_joint/cmd_"
+thruster2_topic = "/model/orca4/joint/thruster2_joint/cmd_"
+thruster3_topic = "/model/orca4/joint/thruster3_joint/cmd_"
+thruster4_topic = "/model/orca4/joint/thruster4_joint/cmd_"
+thruster5_topic = "/model/orca4/joint/thruster5_joint/cmd_"
+thruster6_topic = "/model/orca4/joint/thruster6_joint/cmd_"
 
 # Stereo camera
 # TODO(clyde) adjust mass, add collision (buoyancy) volume, etc.
@@ -136,7 +136,7 @@ camera_mass = 0.001
 camera_ixx = 0.001
 camera_iyy = 0.001
 camera_izz = 0.001
-camera_far_clip = 4  # Furthest distance the camera can "see"
+camera_far_clip = 12  # Furthest distance the camera can "see" TODO(clyde) reduce to 4m
 
 # Fossen equation, see "Guidance and Control of Ocean Vehicles" p. 246
 def thrust_to_ang_vel(thrust):

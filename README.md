@@ -60,13 +60,13 @@ vcs import < orca4/workspace.repos
 
 Get dependencies:
 ~~~
-sudo rosdep update
+rosdep update
 rosdep install -y --from-paths . --ignore-src
 ~~~
 
 MAVROS depends on GeographicLib, and GeographicLib needs some datasets:
 ~~~
-mavros/mavros/scripts/install_geographiclib_datasets.sh
+sudo mavros/mavros/scripts/install_geographiclib_datasets.sh
 ~~~
 
 Build the workspace:
