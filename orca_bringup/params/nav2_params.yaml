@@ -70,7 +70,6 @@ controller_server:
       plugin: "orca_nav2::GoalChecker3D"
       xy_goal_tolerance: 0.8
       z_goal_tolerance: 0.5
-      yaw_goal_tolerance: 10.0  # Ignore yaw
 
     # Controller parameters
     FollowPath:
@@ -191,6 +190,7 @@ planner_server_rclcpp_node:
   ros__parameters:
     use_sim_time: False
 
+# TODO is this used? Should be behaviors?
 recoveries_server:
   ros__parameters:
     costmap_topic: "local_costmap/costmap_raw"

@@ -536,7 +536,7 @@
           </image>
           <clip>
             <near>0.2</near>
-            <far>12</far>
+            <far>4</far>
           </clip>
         </camera>
         <always_on>1</always_on>
@@ -586,7 +586,7 @@
           </image>
           <clip>
             <near>0.2</near>
-            <far>12</far>
+            <far>4</far>
           </clip>
         </camera>
         <always_on>1</always_on>

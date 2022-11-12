@@ -136,7 +136,7 @@ camera_mass = 0.001
 camera_ixx = 0.001
 camera_iyy = 0.001
 camera_izz = 0.001
-camera_far_clip = 12  # Furthest distance the camera can "see" TODO(clyde) reduce to 4m
+camera_far_clip = 4  # Furthest distance the camera can "see"
 
 # Fossen equation, see "Guidance and Control of Ocean Vehicles" p. 246
 def thrust_to_ang_vel(thrust):

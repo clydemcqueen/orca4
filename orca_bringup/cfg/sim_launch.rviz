@@ -4,11 +4,14 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
-        - /TF1
         - /TF1/Frames1
         - /TF1/Tree1
+        - /TF1/Tree1/map1
+        - /TF1/Tree1/map1/odom1
+        - /TF1/Tree1/map1/odom1/base_link1
+        - /TF1/Tree1/map1/slam1
         - /PointCloud21/Autocompute Value Bounds1
+        - /Pose1/Status1
         - /Pose1/Topic1
         - /Odometry1/Shape1
       Splitter Ratio: 0.5
@@ -130,8 +133,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: -10.067497253417969
-        Min Value: -10.340167045593262
+        Max Value: -7.7045674324035645
+        Min Value: -10.931966781616211
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -186,7 +189,7 @@ Visualization Manager:
       Name: Pose
       Shaft Length: 1
       Shaft Radius: 0.05000000074505806
-      Shape: Axes
+      Shape: Arrow
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -220,7 +223,7 @@ Visualization Manager:
         Alpha: 1
         Axes Length: 0.10000000149011612
         Axes Radius: 0.009999999776482582
-        Color: 255; 25; 0
+        Color: 87; 227; 137
         Head Length: 0.30000001192092896
         Head Radius: 0.10000000149011612
         Shaft Length: 1
@@ -232,14 +235,14 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /model/orca/odometry
+        Value: /model/orca4/odometry
       Value: true
     - Alpha: 1
       Axes Length: 1
       Axes Radius: 0.10000000149011612
       Class: rviz_default_plugins/Pose
       Color: 252; 233; 79
-      Enabled: false
+      Enabled: true
       Head Length: 0.30000001192092896
       Head Radius: 0.10000000149011612
       Name: Pose
@@ -253,7 +256,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /orb_slam2_stereo_node/pose
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -300,25 +303,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 31.649532318115234
+      Distance: 44.1054573059082
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.4907382130622864
-        Y: 0.002006460912525654
-        Z: -6.469730377197266
+        X: -1.8230712413787842
+        Y: 1.8364683389663696
+        Z: -8.386772155761719
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.654796838760376
+      Pitch: 0.32979708909988403
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz_default_plugins)
-      Yaw: 4.237382888793945
+      Yaw: 3.242374897003174
     Saved: ~
 Window Geometry:
   Displays:

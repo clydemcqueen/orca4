@@ -395,8 +395,10 @@ public:
     motion_pub_ = create_publisher<orca_msgs::msg::Motion>("motion", reliable);
     odom_pub_ = create_publisher<nav_msgs::msg::Odometry>("odom", reliable);
     rc_pub_ = create_publisher<mavros_msgs::msg::OverrideRCIn>("/mavros/rc/override", reliable);
+
+    // Mavros listens to /mavros/setpoint_position/global with best_effort QoS
     setpoint_pub_ = create_publisher<geographic_msgs::msg::GeoPoseStamped>(
-      "/mavros/setpoint_position/global", reliable);
+      "/mavros/setpoint_position/global", best_effort);
 
     conn_srv_ = create_service<std_srvs::srv::SetBool>(
       "conn",
