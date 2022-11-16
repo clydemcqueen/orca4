@@ -45,9 +45,15 @@ def make_pose(x: float, y: float, z: float):
     return PoseStamped(header=Header(frame_id='map'), pose=Pose(position=Point(x=x, y=y, z=z)))
 
 
+# Go home (1m deep)
 go_home = FollowWaypoints.Goal()
 go_home.poses.append(make_pose(x=0.0, y=0.0, z=-1.0))
 
+# Dive to 8m
+dive = FollowWaypoints.Goal()
+dive.poses.append(make_pose(x=0.0, y=0.0, z=-8.0))
+
+# Big loop, will eventually result in a loop closure
 delay_loop = FollowWaypoints.Goal()
 delay_loop.poses.append(make_pose(x=0.0, y=0.0, z=-7.0))
 for _ in range(2):
@@ -82,6 +88,8 @@ class MissionRunner(Node):
         self.set_target_mode(TargetMode.Goal.ORCA_MODE_ROV)
 
     def set_target_mode(self, mode):
+        print('set mode', mode)
+
         goal_msg = TargetMode.Goal()
         goal_msg.target_mode = mode
 
