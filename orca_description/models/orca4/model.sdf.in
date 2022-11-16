@@ -55,7 +55,7 @@
 
       <!-- IMU sensor gyro and accel data will be sent to ArduSub -->
       <sensor name="imu_sensor" type="imu">
-        <!-- Transform from the Ignition Gazebo body frame (x-forward, y-left, z-up)
+        <!-- Transform from the Gazebo body frame (x-forward, y-left, z-up)
              to the ArduPilot body frame (x-forward, y-right, z-down) -->
         <pose>0 0 0 @d180 0 0</pose>
         <always_on>1</always_on>
@@ -67,7 +67,7 @@
     <!-- Hydrodynamics plugin -->
     <plugin
         filename="gz-sim-hydrodynamics-system"
-        name="ignition::gazebo::systems::Hydrodynamics">
+        name="gz::sim::systems::Hydrodynamics">
       <link_name>base_link</link_name>
       <water_density>@fluid_density</water_density>
       <!-- Added mass: -->
@@ -365,7 +365,7 @@
 
     <plugin
         filename="gz-sim-thruster-system"
-        name="ignition::gazebo::systems::Thruster">
+        name="gz::sim::systems::Thruster">
       <namespace>orca4</namespace>
       <joint_name>thruster1_joint</joint_name>
       <thrust_coefficient>@thrust_coefficient</thrust_coefficient>
@@ -377,7 +377,7 @@
 
     <plugin
         filename="gz-sim-thruster-system"
-        name="ignition::gazebo::systems::Thruster">
+        name="gz::sim::systems::Thruster">
       <namespace>orca4</namespace>
       <joint_name>thruster2_joint</joint_name>
       <thrust_coefficient>@thrust_coefficient</thrust_coefficient>
@@ -389,7 +389,7 @@
 
     <plugin
         filename="gz-sim-thruster-system"
-        name="ignition::gazebo::systems::Thruster">
+        name="gz::sim::systems::Thruster">
       <namespace>orca4</namespace>
       <joint_name>thruster3_joint</joint_name>
       <!-- Reverse spin to balance torque -->
@@ -402,7 +402,7 @@
 
     <plugin
         filename="gz-sim-thruster-system"
-        name="ignition::gazebo::systems::Thruster">
+        name="gz::sim::systems::Thruster">
       <namespace>orca4</namespace>
       <joint_name>thruster4_joint</joint_name>
       <!-- Reverse spin to balance torque -->
@@ -415,7 +415,7 @@
 
     <plugin
         filename="gz-sim-thruster-system"
-        name="ignition::gazebo::systems::Thruster">
+        name="gz::sim::systems::Thruster">
       <namespace>orca4</namespace>
       <joint_name>thruster5_joint</joint_name>
       <thrust_coefficient>@thrust_coefficient</thrust_coefficient>
@@ -427,7 +427,7 @@
 
     <plugin
         filename="gz-sim-thruster-system"
-        name="ignition::gazebo::systems::Thruster">
+        name="gz::sim::systems::Thruster">
       <namespace>orca4</namespace>
       <joint_name>thruster6_joint</joint_name>
       <!-- Reverse spin to balance torque -->
@@ -445,11 +445,11 @@
       <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
       <lock_step>1</lock_step>
 
-      <!-- Transform from the Ignition Gazebo body frame (x-forward, y-left, z-up)
+      <!-- Transform from the Gazebo body frame (x-forward, y-left, z-up)
            to the ArduPilot body frame (x-forward, y-right, z-down) -->
       <modelXYZToAirplaneXForwardZDown>0 0 0 @d180 0 0</modelXYZToAirplaneXForwardZDown>
 
-      <!-- Transform from the Ignition Gazebo world frame (ENU)
+      <!-- Transform from the Gazebo world frame (ENU)
            to the ArduPilot world frame (NED) -->
       <gazeboXYZToNED>0 0 0 @d180 0 @d90</gazeboXYZToNED>
 

@@ -2,7 +2,7 @@
 <sdf version="1.6">
   <world name="sand">
 
-    <!-- Base Ignition Gazebo plugins -->
+    <!-- Base Gazebo plugins -->
     <plugin
         filename="gz-sim-physics-system"
         name="gz::sim::systems::Physics">
