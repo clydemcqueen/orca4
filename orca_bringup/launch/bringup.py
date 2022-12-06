@@ -22,7 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Bring up all nodes."""
+"""
+Bring up all nodes
+
+Use a modified navigation_launch.py that doesn't launch velocity_smoother.
+"""
 
 import math
 import os
@@ -39,7 +43,6 @@ from nav2_common.launch import RewrittenYaml
 
 def generate_launch_description():
     orca_bringup_dir = get_package_share_directory('orca_bringup')
-    nav2_bringup_dir = get_package_share_directory('nav2_bringup')
 
     mavros_params_file = LaunchConfiguration('mavros_params_file')
     nav2_bt_file = os.path.join(orca_bringup_dir, 'behavior_trees', 'orca4_bt.xml')
@@ -186,7 +189,7 @@ def generate_launch_description():
 
         # Include the rest of Nav2
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(os.path.join(nav2_bringup_dir, 'launch', 'navigation_launch.py')),
+            PythonLaunchDescriptionSource(os.path.join(orca_bringup_dir, 'launch', 'navigation_launch.py')),
             launch_arguments={
                 'namespace': '',
                 'use_sim_time': 'False',
