@@ -4,6 +4,10 @@ The following Nav2 plugins provide basic 3D planning and control suitable for op
 ignore the global and local costmaps. They all largely ignore yaw, though the
 `PurePursuitController3D` will generate a value for yaw (`angular.z`) in `cmd_vel`.
 
+> Note for Humble: Nav2 now includes a [velocity smoother](https://navigation.ros.org/configuration/packages/configuring-velocity-smoother.html)
+node which takes cmd_vel output from the Nav2 controller(s) and does velocity, acceleration, and deadband smoothing.
+This node isn't 3D-aware, so it isn't used in Orca4.
+
 ## StraightLinePlanner3D
 
 The `StraightLinePlanner3D` plugin is similar to the 

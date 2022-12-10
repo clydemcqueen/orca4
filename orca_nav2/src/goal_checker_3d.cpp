@@ -51,7 +51,8 @@ class GoalChecker3D : public nav2_core::GoalChecker
 public:
   void initialize(
     const rclcpp_lifecycle::LifecycleNode::WeakPtr & weak_parent,
-    const std::string & plugin_name) override
+    const std::string & plugin_name,
+    const std::shared_ptr<nav2_costmap_2d::Costmap2DROS>) override
   {
     auto parent = weak_parent.lock();
 

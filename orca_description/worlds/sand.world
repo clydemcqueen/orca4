@@ -2,35 +2,35 @@
 <sdf version="1.6">
   <world name="sand">
 
-    <!-- Base Ignition Gazebo plugins -->
+    <!-- Base Gazebo plugins -->
     <plugin
-        filename="ignition-gazebo-physics-system"
-        name="ignition::gazebo::systems::Physics">
+        filename="gz-sim-physics-system"
+        name="gz::sim::systems::Physics">
     </plugin>
     <plugin
-        filename="ignition-gazebo-user-commands-system"
-        name="ignition::gazebo::systems::UserCommands">
+        filename="gz-sim-user-commands-system"
+        name="gz::sim::systems::UserCommands">
     </plugin>
     <plugin
-        filename="ignition-gazebo-scene-broadcaster-system"
-        name="ignition::gazebo::systems::SceneBroadcaster">
+        filename="gz-sim-scene-broadcaster-system"
+        name="gz::sim::systems::SceneBroadcaster">
     </plugin>
     <plugin
-        filename="ignition-gazebo-sensors-system"
-        name="ignition::gazebo::systems::Sensors">
-      <render_engine>ogre</render_engine>
+        filename="gz-sim-sensors-system"
+        name="gz::sim::systems::Sensors">
+<!--      <render_engine>ogre</render_engine>-->
     </plugin>
 
     <!-- IMU plugin manages all IMU sensors -->
     <plugin
-        filename="libignition-gazebo-imu-system.so"
-        name="ignition::gazebo::systems::Imu">
+        filename="libgz-sim-imu-system.so"
+        name="gz::sim::systems::Imu">
     </plugin>
 
     <!-- Buoyancy plugin manages buoyancy for all models -->
     <plugin
-        filename="ignition-gazebo-buoyancy-system"
-        name="ignition::gazebo::systems::Buoyancy">
+        filename="gz-sim-buoyancy-system"
+        name="gz::sim::systems::Buoyancy">
       <!-- Fluid density is 1 (air) above 0 and 1000 (water) below 0 -->
       <graded_buoyancy>
         <default_density>1000</default_density>
@@ -40,11 +40,11 @@
         </density_change>
       </graded_buoyancy>
       <!-- Enable by model name -->
-      <enable>orca</enable>
+      <enable>orca4</enable>
     </plugin>
 
     <include>
-      <uri>https://fuel.ignitionrobotics.org/1.0/OpenRobotics/models/Sun</uri>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
     </include>
 
     <include>
@@ -53,7 +53,7 @@
     </include>
 
     <include>
-      <uri>model://orca</uri>
+      <uri>model://orca4</uri>
       <pose>0 0 -0.2 0 0 0</pose>
     </include>
 

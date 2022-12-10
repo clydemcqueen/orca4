@@ -13,11 +13,11 @@ jobs:
       fail-fast: false
 
       matrix:
-        ros_distribution: [galactic]
+        ros_distribution: [humble]
 
         include:
-          - ros_distribution: galactic
-            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
+          - ros_distribution: humble
+            docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-humble-ros-base-latest
 
     container:
       image: ${{ matrix.docker_image }}
@@ -40,6 +40,4 @@ jobs:
             orca_nav2
             orca_shared
           target-ros2-distro: ${{ matrix.ros_distribution }}
-          # Required (for now) because this is a private repo
-          import-token: ${{ secrets.GITHUB_TOKEN }}
           vcs-repo-file-url: tmp_ws/workspace.repos

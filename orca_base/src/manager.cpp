@@ -228,6 +228,7 @@ class Manager : public rclcpp::Node
       }
 
 #ifdef ALLOW_NAV2_SHUTDOWN
+      // TODO(clyde): this was flaky in Galactic, try in Humble
       if (nav2_active_) {
         call_nav2(nav2_msgs::srv::ManageLifecycleNodes::Request::SHUTDOWN);
         nav2_active_ = false;
@@ -263,6 +264,7 @@ class Manager : public rclcpp::Node
       }
 
 #ifdef ALLOW_NAV2_SHUTDOWN
+      // TODO(clyde): this was flaky in Galactic, try in Humble
       if (nav2_active_) {
         call_nav2(nav2_msgs::srv::ManageLifecycleNodes::Request::SHUTDOWN);
         nav2_active_ = false;

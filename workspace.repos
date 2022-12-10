@@ -3,26 +3,11 @@ repositories:
     type: git
     url: https://github.com/clydemcqueen/bluerov2_ignition
     version: main
-  h264_image_transport:
-    type: git
-    url: https://github.com/clydemcqueen/h264_image_transport
-    version: master
   orb_slam_2_ros:
     type: git
     url: https://github.com/clydemcqueen/orb_slam_2_ros
-    version: orca4_galactic
+    version: orca4_humble
   ros2_shared:
     type: git
     url: https://github.com/ptrmu/ros2_shared
     version: master
-  stereo_decoder:
-    type: git
-    url: https://github.com/clydemcqueen/stereo_decoder
-    version: main
-
-  # Build mavros with a bug fix
-  # TODO(clyde): install when released
-  mavros:
-    type: git
-    url: https://github.com/mavlink/mavros
-    version: 227b3ac

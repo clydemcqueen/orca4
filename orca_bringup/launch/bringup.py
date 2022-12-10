@@ -22,7 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Bring up all nodes."""
+"""
+Bring up all nodes
+
+Use a modified navigation_launch.py that doesn't launch velocity_smoother.
+"""
 
 import math
 import os
@@ -138,23 +142,31 @@ def generate_launch_description():
 
         # Replacement for base_controller: odom->base_link is static
         ExecuteProcess(
-            cmd=['/opt/ros/galactic/lib/tf2_ros/static_transform_publisher',
-                 '0', '0', '0', '0', '0', '0', 'odom', 'base_link'],
+            cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
+                 '--frame-id', 'odom',
+                 '--child-frame-id', 'base_link'],
             output='screen',
             condition=UnlessCondition(LaunchConfiguration('base')),
         ),
 
         # Replacement for an URDF file: base_link->left_camera_link is static
         ExecuteProcess(
-            cmd=['/opt/ros/galactic/lib/tf2_ros/static_transform_publisher',
-                 '-0.15', '0.18', '-0.0675', '0', str(math.pi/2), '0', 'base_link', 'left_camera_link'],
+            cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
+                 '--x', '-0.15',
+                 '--y', '0.18',
+                 '--z', '-0.0675',
+                 '--pitch', str(math.pi/2),
+                 '--frame-id', 'base_link',
+                 '--child-frame-id', 'left_camera_link'],
             output='screen',
         ),
 
         # Provide down frame to accommodate down-facing cameras
         ExecuteProcess(
-            cmd=['/opt/ros/galactic/lib/tf2_ros/static_transform_publisher',
-                 '0', '0', '0', '0', str(math.pi/2), '0', 'slam', 'down'],
+            cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
+                 '--pitch', str(math.pi/2),
+                 '--frame-id', 'slam',
+                 '--child-frame-id', 'down'],
             output='screen',
         ),
 
@@ -179,8 +191,13 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(orca_bringup_dir, 'launch', 'navigation_launch.py')),
             launch_arguments={
+                'namespace': '',
+                'use_sim_time': 'False',
                 'autostart': 'False',
                 'params_file': configured_nav2_params,
+                'use_composition': 'False',
+                'use_respawn': 'False',
+                'container_name': 'nav2_container',
             }.items(),
             condition=IfCondition(LaunchConfiguration('nav')),
         ),

@@ -157,31 +157,31 @@ def generate_launch_description():
             condition=IfCondition(LaunchConfiguration('ardusub')),
         ),
 
-        # Launch Ignition Gazebo
-        # ign must be on the $PATH
-        # libArduPilotPlugin.so must be on the IGN_GAZEBO_SYSTEM_PLUGIN_PATH
+        # Launch Gazebo Sim
+        # gz must be on the $PATH
+        # libArduPilotPlugin.so must be on the GZ_SIM_SYSTEM_PLUGIN_PATH
         ExecuteProcess(
-            cmd=['ign', 'gazebo', '-v', '3', '-r', world_file],
+            cmd=['gz', 'sim', '-v', '3', '-r', world_file],
             output='screen',
             condition=IfCondition(LaunchConfiguration('gzclient')),
         ),
 
-        # Launch Ignition Gazebo server-only
+        # Launch Gazebo Sim server-only
         ExecuteProcess(
-            cmd=['ign', 'gazebo', '-v', '3', '-r', '-s', world_file],
+            cmd=['gz', 'sim', '-v', '3', '-r', '-s', world_file],
             output='screen',
             condition=UnlessCondition(LaunchConfiguration('gzclient')),
         ),
 
-        # Get images from Ignition Gazebo to ROS
+        # Get images from Gazebo Sim to ROS
         Node(
-            package='ros_ign_image',
+            package='ros_gz_image',
             executable='image_bridge',
             arguments=['stereo_left', 'stereo_right'],
             output='screen',
         ),
 
-        # Ignition Gazebo doesn't publish camera info, so do that here
+        # Gazebo Sim doesn't publish camera info, so do that here
         Node(
             package='orca_base',
             executable='camera_info_publisher',
@@ -191,6 +191,7 @@ def generate_launch_description():
                 'camera_info_url': 'file://' + sim_left_ini,
                 'camera_name': 'stereo_left',
                 'frame_id': 'stereo_left_frame',
+                'timer_period_ms': 50,
             }],
             remappings=[
                 ('/camera_info', '/stereo_left/camera_info'),
@@ -206,6 +207,7 @@ def generate_launch_description():
                 'camera_info_url': 'file://' + sim_right_ini,
                 'camera_name': 'stereo_right',
                 'frame_id': 'stereo_right_frame',
+                'timer_period_ms': 50,
             }],
             remappings=[
                 ('/camera_info', '/stereo_right/camera_info'),
@@ -214,11 +216,11 @@ def generate_launch_description():
 
         # Publish ground truth poses from Ignition Gazebo
         Node(
-            package='ros_ign_bridge',
+            package='ros_gz_bridge',
             executable='parameter_bridge',
             arguments=[
-                '/model/orca/odometry@nav_msgs/msg/Odometry[ignition.msgs.Odometry',
-                '/world/sand/model/orca/link/base_link/sensor/imu_sensor/imu@sensor_msgs/msg/Imu[ignition.msgs.IMU',
+                '/model/orca4/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+                '/world/sand/model/orca4/link/base_link/sensor/imu_sensor/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
             ],
             output='screen'
         ),
