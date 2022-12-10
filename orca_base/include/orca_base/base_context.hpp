@@ -31,7 +31,7 @@ namespace orca_base
 {
 
 #define BASE_PARAMS \
-  CXT_MACRO_MEMBER(ardu_frame_id, std::string, "map") \
+  CXT_MACRO_MEMBER(map_frame_id, std::string, "map") \
   CXT_MACRO_MEMBER(slam_frame_id, std::string, "slam") \
   CXT_MACRO_MEMBER(down_frame_id, std::string, "down") \
   CXT_MACRO_MEMBER(odom_frame_id, std::string, "odom") \
