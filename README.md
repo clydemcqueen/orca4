@@ -38,8 +38,9 @@ See [orca_nav2](orca_nav2/README.md) for details.
 
 * [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
 * [Gazebo Garden 7.1.0](https://gazebosim.org/docs/garden/install)
-* ardupilot_gazebo, built from source on [this branch](https://github.com/ArduPilot/ardupilot_gazebo/tree/ignition-garden)
-* ArduSub, see [install instructions](https://ardupilot.org/dev/docs/building-setup-linux.html)
+* [ros_gz, built from source on the ros2 branch](https://github.com/gazebosim/ros_gz)
+* [ardupilot_gazebo, built from source on the ignition-garden branch](https://github.com/ArduPilot/ardupilot_gazebo/tree/ignition-garden)
+* [ArduSub](https://ardupilot.org/dev/docs/building-setup-linux.html)
 
 Build ArduSub for SITL:
 ~~~
