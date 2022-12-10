@@ -176,19 +176,15 @@ class BaseController : public rclcpp::Node
     ext_nav_pub_->publish(ext_nav_msg);
   }
 
+  // Publish the altitude setpoint in the map frame and ArduSub will hold the altitude using the
+  // barometer sensor + vision (if available). Note that, for z, the odom frame and the map frame
+  // are the same.
   void publish_setpoint()
   {
-    tf2::Transform setpoint;
-    if (state_ == State::RUN_NO_MAP) {
-      setpoint = tf_odom_base_;
-    } else {
-      setpoint = tf_map_odom_ * tf_odom_base_;
-    }
-
     geographic_msgs::msg::GeoPoseStamped msg;
     msg.header.stamp = now();
     msg.header.frame_id = cxt_.map_frame_id_;
-    msg.pose.position.altitude = orca::transform_to_pose_msg(setpoint).position.z;
+    msg.pose.position.altitude = orca::transform_to_pose_msg(tf_odom_base_).position.z;
     setpoint_pub_->publish(msg);
   }
 
