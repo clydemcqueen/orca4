@@ -152,7 +152,7 @@ def main():
         print('>>> Setting mode to AUV <<<')
         if send_goal(node, set_target_mode, go_auv) == SendGoalResult.SUCCESS:
             print('>>> Executing mission <<<')
-            send_goal(node, follow_waypoints, go_home)
+            send_goal(node, follow_waypoints, delay_loop)
 
             print('>>> Setting mode to ROV <<<')
             send_goal(node, set_target_mode, go_rov)

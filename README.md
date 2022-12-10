@@ -36,8 +36,8 @@ See [orca_nav2](orca_nav2/README.md) for details.
 
 ## Requirements
 
-* [ROS2 Galactic](https://docs.ros.org/en/galactic/Installation.html)
-* Gazebo Garden, built from source with [this patch](https://github.com/ignitionrobotics/ign-gazebo/pull/1402), see [bluerov2_ignition](https://github.com/clydemcqueen/bluerov2_ignition) for details
+* [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
+* [Gazebo Garden 7.1.0](https://gazebosim.org/docs/garden/install)
 * ardupilot_gazebo, built from source on [this branch](https://github.com/ArduPilot/ardupilot_gazebo/tree/ignition-garden)
 * ArduSub, see [install instructions](https://ardupilot.org/dev/docs/building-setup-linux.html)
 
@@ -52,8 +52,8 @@ cd ~/ardupilot
 
 Populate the workspace:
 ~~~
-mkdir -p ~/orca4_ws/src
-cd orca4_ws/src
+mkdir -p ~/colcon_ws/src
+cd colcon_ws/src
 git clone https://github.com/clydemcqueen/orca4
 vcs import < orca4/workspace.repos
 ~~~
@@ -71,7 +71,7 @@ sudo mavros/mavros/scripts/install_geographiclib_datasets.sh
 
 Build the workspace:
 ~~~
-cd ~/orca4_ws
+cd ~/colcon_ws
 colcon build
 ~~~
 
@@ -129,7 +129,7 @@ At -6m the cameras will pick up a view of the seafloor at and ORB_SLAM2 will sta
 ~~~
 
 
-You should notice a loop closure when the first loop is completed. The adjustment is very small.
+You should notice a loop closure sometime during the 2nd run around the rectangle. The adjustment is very small.
 
 ~~~
 [orb_slam2_ros_stereo-13] Loop detected!
