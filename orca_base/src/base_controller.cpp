@@ -88,9 +88,9 @@ class BaseController : public rclcpp::Node
   bool conn_{false};
 
   // Most recent messages
-  geometry_msgs::msg::PoseStamped ardu_pose_;
-  rclcpp::Time slam_pose_time_;
-  geometry_msgs::msg::Twist cmd_vel_;
+  geometry_msgs::msg::PoseStamped ardu_pose_;   // Pose from ArduSub EKF
+  rclcpp::Time slam_pose_time_;                 // Time of SLAM pose
+  geometry_msgs::msg::Twist cmd_vel_;           // Twist from Nav2
 
   // Motion model
   std::unique_ptr<UnderwaterMotion> underwater_motion_;
@@ -100,12 +100,12 @@ class BaseController : public rclcpp::Node
   tf2::Transform tf_cam_base_;
 
   // Dynamic transforms
-  tf2::Transform tf_ardu_slam_;
-  tf2::Transform tf_ardu_odom_;
+  tf2::Transform tf_map_slam_;
+  tf2::Transform tf_map_odom_;
   tf2::Transform tf_odom_base_;
 
   // Inverse transforms for speed & stability
-  tf2::Transform tf_slam_ardu_;
+  tf2::Transform tf_slam_map_;
   tf2::Transform tf_base_odom_;
 
   // Timer
@@ -171,24 +171,20 @@ class BaseController : public rclcpp::Node
   {
     geometry_msgs::msg::PoseStamped ext_nav_msg;
     ext_nav_msg.header.stamp = now();
-    ext_nav_msg.header.frame_id = cxt_.ardu_frame_id_;
+    ext_nav_msg.header.frame_id = cxt_.map_frame_id_;
     ext_nav_msg.pose = orca::transform_to_pose_msg(ext_nav);
     ext_nav_pub_->publish(ext_nav_msg);
   }
 
+  // Publish the altitude setpoint in the map frame and ArduSub will hold the altitude using the
+  // barometer sensor + vision (if available). Note that, for z, the odom frame and the map frame
+  // are the same.
   void publish_setpoint()
   {
-    tf2::Transform setpoint;
-    if (state_ == State::RUN_NO_MAP) {
-      setpoint = tf_odom_base_;
-    } else {
-      setpoint = tf_ardu_odom_ * tf_odom_base_;
-    }
-
     geographic_msgs::msg::GeoPoseStamped msg;
     msg.header.stamp = now();
-    msg.header.frame_id = cxt_.ardu_frame_id_;
-    msg.pose.position.altitude = orca::transform_to_pose_msg(setpoint).position.z;
+    msg.header.frame_id = cxt_.map_frame_id_;
+    msg.pose.position.altitude = orca::transform_to_pose_msg(tf_odom_base_).position.z;
     setpoint_pub_->publish(msg);
   }
 
@@ -249,13 +245,13 @@ class BaseController : public rclcpp::Node
     }
 
     // Build/update the TF tree
-    publish_tf(cxt_.ardu_frame_id_, cxt_.slam_frame_id_, tf_ardu_slam_);
-    publish_tf(cxt_.ardu_frame_id_, cxt_.odom_frame_id_, tf_ardu_odom_);
+    publish_tf(cxt_.map_frame_id_, cxt_.slam_frame_id_, tf_map_slam_);
+    publish_tf(cxt_.map_frame_id_, cxt_.odom_frame_id_, tf_map_odom_);
     publish_tf(cxt_.odom_frame_id_, cxt_.base_frame_id_, tf_odom_base_);
 
     // If we don't have a SLAM pose, send odom as external navigation to the EKF
     if (state_ == State::RUN_NOT_LOCALIZED) {
-      publish_ext_nav(tf_ardu_odom_ * tf_odom_base_);
+      publish_ext_nav(tf_map_odom_ * tf_odom_base_);
     } else if (state_ != State::RUN_LOCALIZED) {
       publish_ext_nav(tf_odom_base_);
     }
@@ -275,15 +271,14 @@ class BaseController : public rclcpp::Node
       ardu_pose_ = *msg;
       if (state_ == State::RUN_LOCALIZED) {
         // The entire pose is usable
-        auto tf_ardu_base = orca::pose_msg_to_transform(ardu_pose_.pose);
-        tf_ardu_odom_ = tf_ardu_base * tf_base_odom_;
+        auto tf_map_base = orca::pose_msg_to_transform(ardu_pose_.pose);
+        tf_map_odom_ = tf_map_base * tf_base_odom_;
       } else {
         // Only position.z is usable
-        auto tab_z = ardu_pose_.pose.position.z;
+        auto tmb_z = ardu_pose_.pose.position.z;
         auto tob_z = tf_odom_base_.getOrigin().z();
-        auto tao_z = tab_z - tob_z;
-        RCLCPP_DEBUG(get_logger(), "tf_ardu_odom.z %g", tao_z);
-        tf_ardu_odom_.getOrigin().setZ(tao_z);
+        auto tmo_z = tmb_z - tob_z;
+        tf_map_odom_.getOrigin().setZ(tmo_z);
       }
 
       if (state_ == State::HAVE_TF) {
@@ -302,14 +297,14 @@ class BaseController : public rclcpp::Node
       auto tf_slam_base = tf_slam_down_ * tf_orb_cam * tf_cam_base_;
 
       if (state_ == State::RUN_NO_MAP) {
-        // This is our first SLAM pose, so set tf_ardu_slam. Note that the SLAM pose is unfiltered.
+        // This is our first SLAM pose, so set tf_map_slam. Note that the SLAM pose is unfiltered.
         // Future: average N SLAM poses.
-        tf_ardu_slam_ = tf_ardu_odom_ * tf_odom_base_ * tf_slam_base.inverse();
-        RCLCPP_INFO(get_logger(), "tf_ardu_slam %s", orca::str(tf_ardu_slam_).c_str());
+        tf_map_slam_ = tf_map_odom_ * tf_odom_base_ * tf_slam_base.inverse();
+        RCLCPP_INFO(get_logger(), "tf_map_slam %s", orca::str(tf_map_slam_).c_str());
       }
 
       // Send to ArduSub EKF
-      publish_ext_nav(tf_ardu_slam_ * tf_slam_base);
+      publish_ext_nav(tf_map_slam_ * tf_slam_base);
 
       if (state_ == State::RUN_NO_MAP) {
         change_state("map created", State::RUN_LOCALIZED);
@@ -371,12 +366,12 @@ public:
     base_f_odom.position.z = -0.2;
 
     // Init dynamic transforms
-    tf_ardu_slam_.setIdentity();
-    tf_ardu_odom_.setIdentity();
+    tf_map_slam_.setIdentity();
+    tf_map_odom_.setIdentity();
     tf_odom_base_ = orca::pose_msg_to_transform(base_f_odom);
 
     // Init inverse transforms
-    tf_slam_ardu_.setIdentity();
+    tf_slam_map_.setIdentity();
     tf_base_odom_ = tf_odom_base_.inverse();
 
     tf_buffer_ = std::make_shared<tf2_ros::Buffer>(get_clock());

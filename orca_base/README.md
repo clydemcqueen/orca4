@@ -73,9 +73,6 @@ The ArduSub EKF is running in the map frame.
 ArduSub also keeps a MAVLink GLOBAL frame that is expressed in altitude, latitude and longitude.
 Orca4 does not use this GLOBAL frame.
 
-Because the term "map" is overloaded (both ORB_SLAM2 and MAVROS use that term in documentation)
-this frame is called **ardu** in some Orca4 code to distinguish it from the **slam** frame.
-
 ### slam
 
 The slam frame records the global position of the sub when the ORB_SLAM2 first generates a map.
