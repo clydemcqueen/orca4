@@ -20,3 +20,10 @@ repositories:
     type: git
     url: https://github.com/gazebosim/ros_gz
     version: ros2
+
+  # I'm not sure why, but mavros 2.3.0 binaries aren't publishing /mavros/local_position/* topics inside
+  # a docker container, but they work fine if I build from source. TODO(clyde): diagnose
+  mavros:
+    type: git
+    url: https://github.com/mavlink/mavros
+    version: ros2
