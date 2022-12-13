@@ -42,6 +42,10 @@ See [orca_nav2](orca_nav2/README.md) for details.
 * [ardupilot_gazebo, built from source on the ignition-garden branch](https://github.com/ArduPilot/ardupilot_gazebo/tree/ignition-garden)
 * [ArduSub](https://ardupilot.org/dev/docs/building-setup-linux.html)
 
+> Note that ros_gz will look for several Gazebo Garden keys which are not present in rosdistro yet.
+To get around this, install Gazebo Garden manually, then run rosdep with `--skip-keys`.
+See below for details.
+
 Build ArduSub for SITL:
 ~~~
 cd ~/ardupilot
@@ -59,10 +63,10 @@ git clone https://github.com/clydemcqueen/orca4
 vcs import < orca4/workspace.repos
 ~~~
 
-Get dependencies:
+Get dependencies, ignoring Gazebo Garden rosdep keys:
 ~~~
 rosdep update
-rosdep install -y --from-paths . --ignore-src
+rosdep install -y --from-paths . --ignore-src --skip-keys="gz-transport12 gz-sim7 gz-math7 gz-msgs9"
 ~~~
 
 MAVROS depends on GeographicLib, and GeographicLib needs some datasets:
