@@ -86,7 +86,7 @@ RUN modules/waf/waf-light configure --board sitl \
 
 # Clone ardupilot_gazebo code
 WORKDIR /home/$USERNAME
-RUN git clone https://github.com/ArduPilot/ardupilot_gazebo.git -b ignition-garden
+RUN git clone https://github.com/ArduPilot/ardupilot_gazebo.git
 
 # Build ardupilot_gazebo
 RUN [ "/bin/bash" , "-c" , " \
