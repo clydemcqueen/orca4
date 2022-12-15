@@ -34,12 +34,15 @@ planning and navigation. Several simple Nav2 plugins are provided to work in a 3
 
 See [orca_nav2](orca_nav2/README.md) for details.
 
-## Requirements
+## Installation
 
+See the [Dockerfile](docker/Dockerfile) for installation details.
+
+Install these packages:
 * [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
 * [Gazebo Garden 7.1.0](https://gazebosim.org/docs/garden/install)
 * [ros_gz, built from source on the ros2 branch](https://github.com/gazebosim/ros_gz)
-* [ardupilot_gazebo, built from source on the ignition-garden branch](https://github.com/ArduPilot/ardupilot_gazebo/tree/ignition-garden)
+* [ardupilot_gazebo](https://github.com/ArduPilot/ardupilot_gazebo)
 * [ArduSub](https://ardupilot.org/dev/docs/building-setup-linux.html)
 
 Build ArduSub for SITL:
@@ -49,8 +52,6 @@ cd ~/ardupilot
 ./waf sub
 ~~~
 
-## Installation
-
 Populate the workspace:
 ~~~
 mkdir -p ~/colcon_ws/src
@@ -59,10 +60,10 @@ git clone https://github.com/clydemcqueen/orca4
 vcs import < orca4/workspace.repos
 ~~~
 
-Get dependencies:
+Get dependencies, ignoring Gazebo Garden rosdep keys:
 ~~~
 rosdep update
-rosdep install -y --from-paths . --ignore-src
+rosdep install -y --from-paths . --ignore-src --skip-keys="gz-transport12 gz-sim7 gz-math7 gz-msgs9"
 ~~~
 
 MAVROS depends on GeographicLib, and GeographicLib needs some datasets:

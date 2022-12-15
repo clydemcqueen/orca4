@@ -213,13 +213,12 @@ def generate_launch_description():
             ],
         ),
 
-        # Publish ground truth poses from Ignition Gazebo
+        # Publish ground truth pose from Ignition Gazebo
         Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
             arguments=[
                 '/model/orca4/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry',
-                '/world/sand/model/orca4/link/base_link/sensor/imu_sensor/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
             ],
             output='screen'
         ),

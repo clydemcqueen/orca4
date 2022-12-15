@@ -17,6 +17,9 @@ mavros:
     #     local_position handles the LOCAL_POSITION_NED msg (MAV id 32)
     # Also be sure to set the message interval to ~50ms for these 2 messages
 
+    # The vision_pose plugin is provided by mavros_extras.
+    # MAVROS will not complain if this package is missing.
+
     plugin_allowlist:
       - sys_status
       - command

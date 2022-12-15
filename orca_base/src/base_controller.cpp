@@ -264,7 +264,9 @@ class BaseController : public rclcpp::Node
     }
   }
 
-  // Output from ArduSub EKF
+  // Output from ArduSub EKF. Troubleshooting tip: if this message never appears, make sure that
+  // the mavros and mavros_extras packages are installed and that all required MAVROS plugins are
+  // were loaded.
   void ardu_pose_cb(const geometry_msgs::msg::PoseStamped::ConstSharedPtr & msg)
   {
     if (state_ != State::BOOT) {
