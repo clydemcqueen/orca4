@@ -17,10 +17,11 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <exec_depend>nav2_bringup</exec_depend>
+  <exec_depend>mavros</exec_depend>
+  <exec_depend>mavros_extras</exec_depend>
 
   <!-- These are required to run, but I don't want to build them in the CI -->
   <!-- Ideally I would be able to install & use released versions -->
-  <!--<exec_depend>mavros</exec_depend>-->
   <!--<exec_depend>ros_gz_bridge</exec_depend>-->
   <!--<exec_depend>ros_gz_image</exec_depend>-->
 
