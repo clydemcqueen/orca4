@@ -140,7 +140,23 @@ def generate_launch_description():
             condition=IfCondition(LaunchConfiguration('base')),
         ),
 
-        # Replacement for base_controller: odom->base_link is static
+        # Replacement for base_controller: complete the tf tree
+        ExecuteProcess(
+            cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
+                 '--frame-id', 'map',
+                 '--child-frame-id', 'slam'],
+            output='screen',
+            condition=UnlessCondition(LaunchConfiguration('base')),
+        ),
+
+        ExecuteProcess(
+            cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
+                 '--frame-id', 'map',
+                 '--child-frame-id', 'odom'],
+            output='screen',
+            condition=UnlessCondition(LaunchConfiguration('base')),
+        ),
+
         ExecuteProcess(
             cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
                  '--frame-id', 'odom',

@@ -90,12 +90,6 @@ def generate_launch_description():
         ),
 
         DeclareLaunchArgument(
-            'qgc',
-            default_value='False',
-            description='Launch QGroundControl?',
-        ),
-
-        DeclareLaunchArgument(
             'rviz',
             default_value='True',
             description='Launch rviz?',
@@ -131,13 +125,6 @@ def generate_launch_description():
             ],
             output='screen',
             condition=IfCondition(LaunchConfiguration('bag')),
-        ),
-
-        # Launch QGroundControl
-        ExecuteProcess(
-            cmd=['QGroundControl.AppImage'],
-            output='screen',
-            condition=IfCondition(LaunchConfiguration('qgc')),
         ),
 
         # Launch rviz
