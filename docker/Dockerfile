@@ -110,6 +110,9 @@ COPY --chown=$USER_UID:$USER_GID workspace.repos colcon_ws/src/orca4
 WORKDIR /home/$USERNAME/colcon_ws/src
 RUN vcs import < orca4/workspace.repos
 
+# Build for Gazebo Garden
+ENV GZ_VERSION=garden
+
 # Run rosdep over workspace repos
 # Note: ros_gz asks for some Gazebo Garden keys which are not yet present in rosdistro.
 # This is fine, since Gazebo Garden has already been installed.

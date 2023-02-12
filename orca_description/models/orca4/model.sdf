@@ -85,12 +85,12 @@
       <mQ>0</mQ>
       <nR>0</nR>
       <!-- Second order stability derivative: -->
-      <xUU>-33.800000000000004</xUU>
-      <yVV>-54.26875</yVV>
-      <zWW>-73.37135</zWW>
-      <kPP>-4.0</kPP>
-      <mQQ>-4.0</mQQ>
-      <nRR>-4.0</nRR>
+      <xUabsU>-33.800000000000004</xUabsU>
+      <yVabsV>-54.26875</yVabsV>
+      <zWabsW>-73.37135</zWabsW>
+      <kPabsP>-4.0</kPabsP>
+      <mQabsQ>-4.0</mQabsQ>
+      <nRabsR>-4.0</nRabsR>
     </plugin>
 
     <link name="thruster1">

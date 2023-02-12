@@ -76,12 +76,12 @@ iyy = mass / 12 * (collision_x * collision_x + collision_z * collision_z)
 izz = mass / 12 * (collision_x * collision_x + collision_y * collision_y)
 
 # 2nd order stability for the HydrodynamicsPlugin
-xUU = -0.5 * visual_y * visual_z * 0.8 * fluid_density
-yVV = -0.5 * visual_x * visual_z * 0.95 * fluid_density
-zWW = -0.5 * visual_x * visual_y * 0.95 * fluid_density
-kPP = -0.5 * 0.008 * fluid_density
-mQQ = -0.5 * 0.008 * fluid_density
-nRR = -0.5 * 0.008 * fluid_density
+xUabsU = -0.5 * visual_y * visual_z * 0.8 * fluid_density
+yVabsV = -0.5 * visual_x * visual_z * 0.95 * fluid_density
+zWabsW = -0.5 * visual_x * visual_y * 0.95 * fluid_density
+kPabsP = -0.5 * 0.008 * fluid_density
+mQabsQ = -0.5 * 0.008 * fluid_density
+nRabsR = -0.5 * 0.008 * fluid_density
 
 # Thruster placement
 thruster_x = 0.15
