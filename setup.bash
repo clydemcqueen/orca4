@@ -22,3 +22,6 @@ export GZ_SIM_RESOURCE_PATH=$HOME/colcon_ws/src/bluerov2_ignition/models:$HOME/c
 
 # Add orca4 models and worlds
 export GZ_SIM_RESOURCE_PATH=$HOME/colcon_ws/src/orca4/orca_description/models:$HOME/colcon_ws/src/orca4/orca_description/worlds:$GZ_SIM_RESOURCE_PATH
+
+# Build ros_gz on the humble branch for Gazebo Garden
+export GZ_VERSION=garden

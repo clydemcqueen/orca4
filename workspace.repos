@@ -15,8 +15,8 @@ repositories:
     url: https://github.com/ptrmu/ros2_shared
     version: master
 
-  # ros_gz supports Humble + Garden only if built from source on the ros2 branch
+  # ros_gz default on the humble branch is Fortress; export GZ_VERSION=garden to build for Garden
   ros_gz:
     type: git
     url: https://github.com/gazebosim/ros_gz
-    version: ros2
+    version: humble
