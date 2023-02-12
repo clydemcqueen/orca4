@@ -41,7 +41,6 @@ See the [Dockerfile](docker/Dockerfile) for installation details.
 Install these packages:
 * [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
 * [Gazebo Garden 7.1.0](https://gazebosim.org/docs/garden/install)
-* [ros_gz, built from source on the ros2 branch](https://github.com/gazebosim/ros_gz)
 * [ardupilot_gazebo](https://github.com/ArduPilot/ardupilot_gazebo)
 * [ArduSub](https://ardupilot.org/dev/docs/building-setup-linux.html)
 
@@ -58,6 +57,12 @@ mkdir -p ~/colcon_ws/src
 cd colcon_ws/src
 git clone https://github.com/clydemcqueen/orca4
 vcs import < orca4/workspace.repos
+~~~
+
+
+Build ros_gz for Garden, not Fortress:
+~~~
+export GZ_VERSION=garden
 ~~~
 
 Get dependencies, ignoring Gazebo Garden rosdep keys:
