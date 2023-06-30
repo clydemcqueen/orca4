@@ -21,26 +21,13 @@
         </inertia>
       </inertial>
 
-      <visual name="base_link_box">
-        <pose>0 0 0 0 0 0</pose>
-        <transparency>0.5</transparency>
+      <visual name="base_link_visual">
         <geometry>
-          <box>
-            <size>@visual_x @visual_y @visual_z</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/bluerov2.dae</uri>
+            <scale>0.025 0.025 0.025</scale>
+          </mesh>
         </geometry>
-      </visual>
-
-      <visual name="base_link_dome">
-        <pose>@dome_x 0 0 0 0 0</pose>
-        <geometry>
-          <sphere>
-            <radius>0.05</radius>
-          </sphere>
-        </geometry>
-        <material>
-          <emissive>0 1 0 0</emissive>
-        </material>
       </visual>
 
       <!-- Collision volume * fluid_density == displaced mass, used by BuoyancyPlugin -->
@@ -95,27 +82,13 @@
 
     <link name="thruster1">
       <pose>@thruster_x -@thruster_y 0 -@d90 @d90 -@d45</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 @d90 0 0</pose>
         <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
+          <mesh>
+            <uri>model://orca/meshes/t200-cw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>@propeller_mass</mass>
@@ -132,27 +105,13 @@
 
     <link name="thruster2">
       <pose>@thruster_x @thruster_y 0 -@d90 @d90 -@d135</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 -@d90 0 0</pose>
         <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/t200-ccw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>@propeller_mass</mass>
@@ -169,27 +128,13 @@
 
     <link name="thruster3">
       <pose>-@thruster_x -@thruster_y 0 -@d90 @d90 @d45</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 -@d90 0 0</pose>
         <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/t200-ccw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>@propeller_mass</mass>
@@ -206,27 +151,13 @@
 
     <link name="thruster4">
       <pose>-@thruster_x @thruster_y 0 -@d90 @d90 @d135</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 @d90 0 0</pose>
         <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
+          <mesh>
+            <uri>model://orca/meshes/t200-cw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>@propeller_mass</mass>
@@ -243,27 +174,13 @@
 
     <link name="thruster5">
       <pose>0 -@vert_thruster_y @vert_thruster_z 0 0 0</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 -@d90 0 @d90</pose>
         <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/t200-ccw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>@propeller_mass</mass>
@@ -280,27 +197,13 @@
 
     <link name="thruster6">
       <pose>0 @vert_thruster_y @vert_thruster_z 0 0 0</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 @d90 0 @d90</pose>
         <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/t200-cw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>@propeller_size</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>@propeller_mass</mass>
@@ -512,115 +415,6 @@
         <multiplier>@cw_control_multiplier</multiplier>
       </control>
 
-    </plugin>
-
-    <!-- Left camera link -->
-    <link name="left_camera_link">
-      <pose>@camera_x @camera_y @camera_z 0 0 0</pose>
-      <visual name="left_camera_tube">
-        <transparency>0.5</transparency>
-        <geometry>
-          <cylinder>
-            <length>@camera_height</length>
-            <radius>@camera_radius</radius>
-          </cylinder>
-        </geometry>
-      </visual>
-      <sensor name="left_camera" type="camera">
-        <pose>0 0 @camera_sensor_z 0 @d90 0</pose>
-        <camera>
-          <horizontal_fov>1.4</horizontal_fov>
-          <image>
-            <width>800</width>
-            <height>600</height>
-          </image>
-          <clip>
-            <near>0.2</near>
-            <far>@camera_far_clip</far>
-          </clip>
-        </camera>
-        <always_on>1</always_on>
-        <update_rate>5</update_rate>
-        <visualize>true</visualize>
-        <topic>stereo_left</topic>
-      </sensor>
-      <inertial>
-        <mass>@camera_mass</mass>
-        <inertia>
-          <ixx>@camera_ixx</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>@camera_iyy</iyy>
-          <iyz>0</iyz>
-          <izz>@camera_izz</izz>
-        </inertia>
-      </inertial>
-    </link>
-
-    <!-- Attach left_camera_link to base_link -->
-    <joint name="left_camera_joint" type="fixed">
-      <!-- <pose>-0.15 0.18 -0.0675 0 @d90 0</pose> -->
-      <parent>base_link</parent>
-      <child>left_camera_link</child>
-    </joint>
-
-    <!-- Right camera link -->
-    <link name="right_camera_link">
-      <pose>@camera_x -@camera_y @camera_z 0 0 0</pose>
-      <visual name="right_camera_tube">
-        <transparency>0.5</transparency>
-        <geometry>
-          <cylinder>
-            <length>@camera_height</length>
-            <radius>@camera_radius</radius>
-          </cylinder>
-        </geometry>
-      </visual>
-      <sensor name="right_camera" type="camera">
-        <pose>0 0 @camera_sensor_z 0 @d90 0</pose>
-        <camera>
-          <horizontal_fov>1.4</horizontal_fov>
-          <image>
-            <width>800</width>
-            <height>600</height>
-          </image>
-          <clip>
-            <near>0.2</near>
-            <far>@camera_far_clip</far>
-          </clip>
-        </camera>
-        <always_on>1</always_on>
-        <update_rate>5</update_rate>
-        <visualize>true</visualize>
-        <topic>stereo_right</topic>
-      </sensor>
-      <inertial>
-        <mass>@camera_mass</mass>
-        <inertia>
-          <ixx>@camera_ixx</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>@camera_iyy</iyy>
-          <iyz>0</iyz>
-          <izz>@camera_izz</izz>
-        </inertia>
-      </inertial>
-    </link>
-
-    <!-- Attach right_camera_link to base_link -->
-    <joint name="right_camera_joint" type="fixed">
-      <!-- <pose>-0.15 -0.18 -0.0675 0 @d90 0</pose> -->
-      <parent>base_link</parent>
-      <child>right_camera_link</child>
-    </joint>
-
-    <!-- Publish the ground-truth pose for rviz -->
-    <plugin
-        filename="gz-sim-odometry-publisher-system"
-        name="gz::sim::systems::OdometryPublisher">
-      <odom_frame>map</odom_frame>
-      <robot_base_frame>orca4</robot_base_frame>
-      <dimensions>3</dimensions>
     </plugin>
 
   </model>
