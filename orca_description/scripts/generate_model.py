@@ -1,12 +1,34 @@
 #!/usr/bin/env python3
 
+# MIT License
+#
+# Copyright (c) 2022 Clyde McQueen
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """
 Generate the model.sdf file by substituting strings of the form "@foo" with calculated values
 
 The SDF file uses the ArduPilotPlugin COMMAND control method; this sends commands to a specified
 ign-transport topic rather than directly controlling a joint.
 
-We use the COMMAND method to send commands to the Gazebo ThrusterPlugin. The ThrusterPlugin
+We use the COMMAND method to send commands to the Gazebo Sim ThrusterPlugin. The ThrusterPlugin
 supports 2 control methods:
       control thrust via /cmd_thrust
       control angular velocity via /cmd_vel
@@ -100,6 +122,20 @@ thruster4_topic = "/model/orca4/joint/thruster4_joint/cmd_"
 thruster5_topic = "/model/orca4/joint/thruster5_joint/cmd_"
 thruster6_topic = "/model/orca4/joint/thruster6_joint/cmd_"
 
+# Stereo camera
+# TODO(clyde) adjust mass, add collision (buoyancy) volume, etc.
+stereo_baseline = 0.36  # Use same baseline as Orca3 for now
+camera_radius = 0.0275
+camera_height = 0.135
+camera_x = -0.18
+camera_y = stereo_baseline / 2
+camera_z = (camera_height - visual_z) / 2 - 0.01
+camera_sensor_z = -camera_height / 2 - 0.02
+camera_mass = 0.001
+camera_ixx = 0.001
+camera_iyy = 0.001
+camera_izz = 0.001
+camera_far_clip = 4  # Furthest distance the camera can "see"
 
 # Fossen equation, see "Guidance and Control of Ocean Vehicles" p. 246
 def thrust_to_ang_vel(thrust):
