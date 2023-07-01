@@ -419,18 +419,18 @@
 
     <!-- Left camera link -->
     <link name="left_camera_link">
-      <pose>-0.18 0.18 -0.06749999999999999 0 0 0</pose>
+      <pose>@camera_x @camera_y @camera_z 0 0 0</pose>
       <visual name="left_camera_tube">
         <transparency>0.5</transparency>
         <geometry>
           <cylinder>
-            <length>0.135</length>
-            <radius>0.0275</radius>
+            <length>@camera_height</length>
+            <radius>@camera_radius</radius>
           </cylinder>
         </geometry>
       </visual>
       <sensor name="left_camera" type="camera">
-        <pose>0 0 -0.08750000000000001 0 1.5707963267948966 0</pose>
+        <pose>0 0 @camera_sensor_z 0 @d90 0</pose>
         <camera>
           <horizontal_fov>1.4</horizontal_fov>
           <image>
@@ -439,7 +439,7 @@
           </image>
           <clip>
             <near>0.2</near>
-            <far>4</far>
+            <far>@camera_far_clip</far>
           </clip>
         </camera>
         <always_on>1</always_on>
@@ -448,39 +448,39 @@
         <topic>stereo_left</topic>
       </sensor>
       <inertial>
-        <mass>0.001</mass>
+        <mass>@camera_mass</mass>
         <inertia>
-          <ixx>0.001</ixx>
+          <ixx>@camera_ixx</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.001</iyy>
+          <iyy>@camera_iyy</iyy>
           <iyz>0</iyz>
-          <izz>0.001</izz>
+          <izz>@camera_izz</izz>
         </inertia>
       </inertial>
     </link>
 
     <!-- Attach left_camera_link to base_link -->
     <joint name="left_camera_joint" type="fixed">
-      <!-- <pose>-0.15 0.18 -0.0675 0 1.5707963267948966 0</pose> -->
+      <!-- <pose>-0.15 0.18 -0.0675 0 @d90 0</pose> -->
       <parent>base_link</parent>
       <child>left_camera_link</child>
     </joint>
 
     <!-- Right camera link -->
     <link name="right_camera_link">
-      <pose>-0.18 -0.18 -0.06749999999999999 0 0 0</pose>
+      <pose>@camera_x -@camera_y @camera_z 0 0 0</pose>
       <visual name="right_camera_tube">
         <transparency>0.5</transparency>
         <geometry>
           <cylinder>
-            <length>0.135</length>
-            <radius>0.0275</radius>
+            <length>@camera_height</length>
+            <radius>@camera_radius</radius>
           </cylinder>
         </geometry>
       </visual>
       <sensor name="right_camera" type="camera">
-        <pose>0 0 -0.08750000000000001 0 1.5707963267948966 0</pose>
+        <pose>0 0 @camera_sensor_z 0 @d90 0</pose>
         <camera>
           <horizontal_fov>1.4</horizontal_fov>
           <image>
@@ -489,7 +489,7 @@
           </image>
           <clip>
             <near>0.2</near>
-            <far>4</far>
+            <far>@camera_far_clip</far>
           </clip>
         </camera>
         <always_on>1</always_on>
@@ -498,21 +498,21 @@
         <topic>stereo_right</topic>
       </sensor>
       <inertial>
-        <mass>0.001</mass>
+        <mass>@camera_mass</mass>
         <inertia>
-          <ixx>0.001</ixx>
+          <ixx>@camera_ixx</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.001</iyy>
+          <iyy>@camera_iyy</iyy>
           <iyz>0</iyz>
-          <izz>0.001</izz>
+          <izz>@camera_izz</izz>
         </inertia>
       </inertial>
     </link>
 
     <!-- Attach right_camera_link to base_link -->
     <joint name="right_camera_joint" type="fixed">
-      <!-- <pose>-0.15 -0.18 -0.0675 0 1.5707963267948966 0</pose> -->
+      <!-- <pose>-0.15 -0.18 -0.0675 0 @d90 0</pose> -->
       <parent>base_link</parent>
       <child>right_camera_link</child>
     </joint>
@@ -527,4 +527,5 @@
     </plugin>
 
   </model>
+</sdf>
 </sdf>
