@@ -53,7 +53,6 @@ visual_x = 0.457
 visual_y = 0.338
 visual_z = 0.25
 fluid_density = 1000
-dome_x = visual_x / 2
 
 # The ROV should be positively buoyant
 buoyancy_adjustment = 0.05
@@ -84,11 +83,11 @@ mQabsQ = -0.5 * 0.008 * fluid_density
 nRabsR = -0.5 * 0.008 * fluid_density
 
 # Thruster placement
-thruster_x = 0.15
-thruster_y = 0.09
+thruster_x = 0.14
+thruster_y = 0.092
 thruster_z = -0.009
-vert_thruster_y = 0.105
-vert_thruster_z = 0.09
+vert_thruster_y = 0.109
+vert_thruster_z = 0.077
 
 # Propeller link parameters
 propeller_size = "0.1 0.02 0.01"

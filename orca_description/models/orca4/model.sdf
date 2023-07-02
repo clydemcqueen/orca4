@@ -20,29 +20,16 @@
           <izz>0.2692441666666667</izz>
         </inertia>
       </inertial>
-
-      <visual name="base_link_box">
-        <pose>0 0 0 0 0 0</pose>
-        <transparency>0.5</transparency>
+      
+      <visual name="base_link_visual">
         <geometry>
-          <box>
-            <size>0.457 0.338 0.25</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/bluerov2.dae</uri>
+            <scale>0.025 0.025 0.025</scale>
+          </mesh>
         </geometry>
       </visual>
-
-      <visual name="base_link_dome">
-        <pose>0.2285 0 0 0 0 0</pose>
-        <geometry>
-          <sphere>
-            <radius>0.05</radius>
-          </sphere>
-        </geometry>
-        <material>
-          <emissive>0 1 0 0</emissive>
-        </material>
-      </visual>
-
+      
       <!-- Collision volume * fluid_density == displaced mass, used by BuoyancyPlugin -->
       <collision name="base_link_collision">
         <pose>0 0 0.06 0 0 0</pose>
@@ -94,28 +81,14 @@
     </plugin>
 
     <link name="thruster1">
-      <pose>0.15 -0.09 0 -1.5707963267948966 1.5707963267948966 -0.7853981633974483</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <pose>0.14 -0.092 0 -1.5707963267948966 1.5707963267948966 -0.7853981633974483</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 1.5707963267948966 0 0</pose>
         <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/t200-cw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>0.002</mass>
@@ -131,28 +104,14 @@
     </link>
 
     <link name="thruster2">
-      <pose>0.15 0.09 0 -1.5707963267948966 1.5707963267948966 -2.356194490192345</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <pose>0.14 0.092 0 -1.5707963267948966 1.5707963267948966 -2.356194490192345</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 -1.5707963267948966 0 0</pose>
         <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/t200-ccw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>0.002</mass>
@@ -168,28 +127,14 @@
     </link>
 
     <link name="thruster3">
-      <pose>-0.15 -0.09 0 -1.5707963267948966 1.5707963267948966 0.7853981633974483</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <pose>-0.14 -0.092 0 -1.5707963267948966 1.5707963267948966 0.7853981633974483</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 -1.5707963267948966 0 0</pose>
         <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/t200-ccw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>0.002</mass>
@@ -205,28 +150,14 @@
     </link>
 
     <link name="thruster4">
-      <pose>-0.15 0.09 0 -1.5707963267948966 1.5707963267948966 2.356194490192345</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <pose>-0.14 0.092 0 -1.5707963267948966 1.5707963267948966 2.356194490192345</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 1.5707963267948966 0 0</pose>
         <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/t200-cw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>0.002</mass>
@@ -242,28 +173,14 @@
     </link>
 
     <link name="thruster5">
-      <pose>0 -0.105 0.09 0 0 0</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <pose>0 -0.109 0.077 0 0 0</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 -1.5707963267948966 0 1.5707963267948966</pose>
         <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/t200-ccw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>0.002</mass>
@@ -279,28 +196,14 @@
     </link>
 
     <link name="thruster6">
-      <pose>0 0.105 0.09 0 0 0</pose>
-      <visual name="thruster_front">
-        <pose>0 0 0.005 0 0 0</pose>
+      <pose>0 0.109 0.077 0 0 0</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 1.5707963267948966 0 1.5707963267948966</pose>
         <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
+          <mesh>
+            <uri>model://orca4/meshes/t200-cw-prop.dae</uri>
+          </mesh>
         </geometry>
-        <material>
-          <emissive>0 0 1 0</emissive>
-        </material>
-      </visual>
-      <visual name="thruster_back">
-        <pose>0 0 -0.005 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.1 0.02 0.01</size>
-          </box>
-        </geometry>
-        <material>
-          <emissive>1 0 0 0</emissive>
-        </material>
       </visual>
       <inertial>
         <mass>0.002</mass>
