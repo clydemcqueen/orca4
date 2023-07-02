@@ -86,7 +86,7 @@
         <pose>0 0 0 @d90 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://orca/meshes/t200-cw-prop.dae</uri>
+            <uri>model://orca4/meshes/t200-cw-prop.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -155,7 +155,7 @@
         <pose>0 0 0 @d90 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://orca/meshes/t200-cw-prop.dae</uri>
+            <uri>model://orca4/meshes/t200-cw-prop.dae</uri>
           </mesh>
         </geometry>
       </visual>
