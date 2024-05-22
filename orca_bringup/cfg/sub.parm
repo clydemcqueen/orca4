@@ -1,4 +1,4 @@
-# These settings were copied from ardupilot/Tools/autotest/default_params/sub.parm
+# These settings were copied from ardupilot/Tools/autotest/default_params/sub.parm as of 25fd69b
 BATT_MONITOR     4
 BTN0_FUNCTION    0
 BTN10_SFUNCTION  0
@@ -84,11 +84,6 @@ SERVO8_MAX 1900
 SERVO8_MIN 1100
 BARO_EXT_BUS 1
 
-# Use EK3
-EK2_ENABLE 0
-EK3_ENABLE 1
-AHRS_EKF_TYPE 3
-
 # Enable external nav
 # From https://ardupilot.org/copter/docs/common-vio-tracking-camera.html
 GPS_TYPE 0            # Disable GPS
@@ -96,8 +91,11 @@ VISO_TYPE 1           # External vision
 EK3_SRC1_POSXY 6      # External nav
 EK3_SRC1_VELXY 6      # External nav
 EK3_SRC1_POSZ 1       # Baro is the primary z source
-EK3_SRC1_VELZ 6       # External nav z velocity influences EKF
+EK3_SRC1_VELZ 0       # None
 COMPASS_USE 0         # Disable compass 1
 COMPASS_USE2 0        # Disable compass 2
 COMPASS_USE3 0        # Disable compass 3
 EK3_SRC1_YAW 6        # External nav
+
+# Reduce simulated barometer noise
+SIM_BARO_RND 0.02

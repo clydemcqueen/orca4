@@ -2,26 +2,33 @@
 
 # Modify this for your environment
 
-# Add results of ArduSub build
-export PATH=$HOME/ardupilot/build/sitl/bin:$PATH
+if [[ -z "${ARDUPILOT_GAZEBO}" ]]; then
+  export ARDUPILOT_GAZEBO="$HOME/ardupilot_gazebo"
+fi
 
-# Optional: add autotest to the PATH, helpful for running sim_vehicle.py
-export PATH=$HOME/ardupilot/Tools/autotest:$PATH
+if [[ -z "${ARDUPILOT_HOME}" ]]; then
+  export ARDUPILOT_HOME="$HOME/ardupilot"
+fi
+
+if [[ -z "${COLCON_WS}" ]]; then
+  export COLCON_WS="$HOME/colcon_ws"
+fi
+
+
+# Add results of ArduSub build
+export PATH=$ARDUPILOT_HOME/build/sitl/bin:$PATH
 
 # Add results of colcon build
-source $HOME/colcon_ws/install/setup.bash
+source ${COLCON_WS}/install/setup.bash
 
 # Add ardupilot_gazebo plugin
-export GZ_SIM_SYSTEM_PLUGIN_PATH=$HOME/ardupilot_gazebo/build:$Z_SIM_SYSTEM_PLUGIN_PATH
-
-# Optional: add ardupilot_gazebo models and worlds
-export GZ_SIM_RESOURCE_PATH=$HOME/ardupilot_gazebo/models:$HOME/ardupilot_gazebo/worlds:$GZ_SIM_RESOURCE_PATH
+export GZ_SIM_SYSTEM_PLUGIN_PATH=${ARDUPILOT_GAZEBO}/build:$GZ_SIM_SYSTEM_PLUGIN_PATH
 
 # Add bluerov2_ignition models and worlds
-export GZ_SIM_RESOURCE_PATH=$HOME/colcon_ws/src/bluerov2_ignition/models:$HOME/colcon_ws/src/bluerov2_ignition/worlds:$GZ_SIM_RESOURCE_PATH
+export GZ_SIM_RESOURCE_PATH=${COLCON_WS}/src/bluerov2_ignition/models:${COLCON_WS}/src/bluerov2_ignition/worlds:$GZ_SIM_RESOURCE_PATH
 
 # Add orca4 models and worlds
-export GZ_SIM_RESOURCE_PATH=$HOME/colcon_ws/src/orca4/orca_description/models:$HOME/colcon_ws/src/orca4/orca_description/worlds:$GZ_SIM_RESOURCE_PATH
+export GZ_SIM_RESOURCE_PATH=${COLCON_WS}/src/orca4/orca_description/models:${COLCON_WS}/src/orca4/orca_description/worlds:$GZ_SIM_RESOURCE_PATH
 
 # Build ros_gz on the humble branch for Gazebo Garden
 export GZ_VERSION=garden
