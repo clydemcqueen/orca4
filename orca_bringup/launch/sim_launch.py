@@ -134,11 +134,13 @@ def generate_launch_description():
             condition=IfCondition(LaunchConfiguration('rviz')),
         ),
 
-        # Launch ArduSub w/ SIM_JSON (wipe eeprom w/ -w)
+        # Launch ArduSub w/ SIM_JSON
+        # -w: wipe eeprom
+        # --home: start location (lat,lon,alt,yaw). Yaw is provided by Gazebo, so the start yaw value is ignored.
         # ardusub must be on the $PATH, see src/orca4/setup.bash
         ExecuteProcess(
             cmd=['ardusub', '-S', '-w', '-M', 'JSON', '--defaults', ardusub_params_file,
-                 '-I0', '--home', '33.810313,-118.39386700000001,0.0,270.0'],
+                 '-I0', '--home', '33.810313,-118.39386700000001,0.0,0'],
             output='screen',
             condition=IfCondition(LaunchConfiguration('ardusub')),
         ),
