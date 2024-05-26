@@ -88,6 +88,9 @@ RUN modules/waf/waf-light configure --board sitl \
 WORKDIR /home/$USERNAME
 RUN git clone https://github.com/ArduPilot/ardupilot_gazebo.git
 
+# Build for Gazebo Garden, define this before building ardupilot_gazebo and ros_gz
+ENV GZ_VERSION=garden
+
 # Build ardupilot_gazebo
 RUN [ "/bin/bash" , "-c" , " \
   cd ardupilot_gazebo \
@@ -109,9 +112,6 @@ COPY --chown=$USER_UID:$USER_GID workspace.repos colcon_ws/src/orca4
 # Get workspace repos
 WORKDIR /home/$USERNAME/colcon_ws/src
 RUN vcs import < orca4/workspace.repos
-
-# Build for Gazebo Garden
-ENV GZ_VERSION=garden
 
 # Run rosdep over workspace repos
 # Note: ros_gz asks for some Gazebo Garden keys which are not yet present in rosdistro.
