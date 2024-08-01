@@ -94,6 +94,7 @@ ENV GZ_VERSION=garden
 # Build ardupilot_gazebo
 RUN [ "/bin/bash" , "-c" , " \
   cd ardupilot_gazebo \
+  && git checkout 4945088 \
   && mkdir build \
   && cd build \
   && cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo \
