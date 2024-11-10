@@ -142,7 +142,7 @@ def generate_launch_description():
 
         # Replacement for base_controller: complete the tf tree
         ExecuteProcess(
-            cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
+            cmd=[f'/opt/ros/{os.environ['ROS_DISTRO']}/lib/tf2_ros/static_transform_publisher',
                  '--frame-id', 'map',
                  '--child-frame-id', 'slam'],
             output='screen',
@@ -150,7 +150,7 @@ def generate_launch_description():
         ),
 
         ExecuteProcess(
-            cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
+            cmd=[f'/opt/ros/{os.environ['ROS_DISTRO']}/lib/tf2_ros/static_transform_publisher',
                  '--frame-id', 'map',
                  '--child-frame-id', 'odom'],
             output='screen',
@@ -158,7 +158,7 @@ def generate_launch_description():
         ),
 
         ExecuteProcess(
-            cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
+            cmd=[f'/opt/ros/{os.environ['ROS_DISTRO']}/lib/tf2_ros/static_transform_publisher',
                  '--frame-id', 'odom',
                  '--child-frame-id', 'base_link'],
             output='screen',
@@ -167,7 +167,7 @@ def generate_launch_description():
 
         # Replacement for an URDF file: base_link->left_camera_link is static
         ExecuteProcess(
-            cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
+            cmd=[f'/opt/ros/{os.environ['ROS_DISTRO']}/lib/tf2_ros/static_transform_publisher',
                  '--x', '-0.15',
                  '--y', '0.18',
                  '--z', '-0.0675',
@@ -179,7 +179,7 @@ def generate_launch_description():
 
         # Provide down frame to accommodate down-facing cameras
         ExecuteProcess(
-            cmd=['/opt/ros/humble/lib/tf2_ros/static_transform_publisher',
+            cmd=[f'/opt/ros/{os.environ['ROS_DISTRO']}/lib/tf2_ros/static_transform_publisher',
                  '--pitch', str(math.pi/2),
                  '--frame-id', 'slam',
                  '--child-frame-id', 'down'],
@@ -187,21 +187,21 @@ def generate_launch_description():
         ),
 
         # orb_slam2: build a map of 3d points, localize against the map, and publish the camera pose
-        Node(
-            package='orb_slam2_ros',
-            executable='orb_slam2_ros_stereo',
-            output='screen',
-            name='orb_slam2_stereo',
-            parameters=[orca_params_file, {
-                'voc_file': orb_voc_file,
-            }],
-            remappings=[
-                ('/image_left/image_color_rect', '/stereo_left'),
-                ('/image_right/image_color_rect', '/stereo_right'),
-                ('/camera/camera_info', '/stereo_right/camera_info'),
-            ],
-            condition=IfCondition(LaunchConfiguration('slam')),
-        ),
+        # Node(
+        #     package='orb_slam2_ros',
+        #     executable='orb_slam2_ros_stereo',
+        #     output='screen',
+        #     name='orb_slam2_stereo',
+        #     parameters=[orca_params_file, {
+        #         'voc_file': orb_voc_file,
+        #     }],
+        #     remappings=[
+        #         ('/image_left/image_color_rect', '/stereo_left'),
+        #         ('/image_right/image_color_rect', '/stereo_right'),
+        #         ('/camera/camera_info', '/stereo_right/camera_info'),
+        #     ],
+        #     condition=IfCondition(LaunchConfiguration('slam')),
+        # ),
 
         # Include the rest of Nav2
         IncludeLaunchDescription(
