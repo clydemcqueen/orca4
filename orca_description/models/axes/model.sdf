@@ -1,0 +1,59 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='axes'>
+    <static>true</static>
+    <pose>0 0 0 0 0 0</pose>
+
+    <link name="x_axis">
+      <visual name="x_visual">
+        <pose degrees="true">1 0 0 90 0 90</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>2</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
+          <specular>1 0 0 1</specular>
+        </material>
+      </visual>
+    </link>
+
+    <link name="y_axis">
+      <visual name="y_visual">
+        <pose degrees="true">0 1 0 0 90 90</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>2</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0 1 0 1</ambient>
+          <diffuse>0 1 0 1</diffuse>
+          <specular>0 1 0 1</specular>
+        </material>
+      </visual>
+    </link>
+
+    <link name="z_axis">
+      <visual name="z_visual">
+        <pose degrees="true">0 0 1 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>2</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0 0 1 1</ambient>
+          <diffuse>0 0 1 1</diffuse>
+          <specular>0 0 1 1</specular>
+        </material>
+      </visual>
+    </link>
+
+  </model>
+</sdf>
