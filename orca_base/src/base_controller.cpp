@@ -416,7 +416,7 @@ public:
         }
         response->success = true;
       },
-      rmw_qos_profile_services_default);
+      rclcpp::QoS(rclcpp::ServicesQoS()));
 
     cmd_vel_sub_ = create_subscription<geometry_msgs::msg::Twist>(
       "cmd_vel", reliable,
