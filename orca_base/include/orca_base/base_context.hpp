@@ -67,7 +67,7 @@ struct BaseContext : orca::Model
 
 #define BASE_ALL_PARAMS \
   MODEL_PARAMS \
-  BASE_PARAMS \
+    BASE_PARAMS \
 /* End of list */
 
 }  // namespace orca_base
