@@ -24,8 +24,8 @@ source ${COLCON_WS}/install/setup.bash
 # Add ardupilot_gazebo plugin
 export GZ_SIM_SYSTEM_PLUGIN_PATH=${ARDUPILOT_GAZEBO}/build:$GZ_SIM_SYSTEM_PLUGIN_PATH
 
-# Add bluerov2_ignition models and worlds
-export GZ_SIM_RESOURCE_PATH=${COLCON_WS}/src/bluerov2_ignition/models:${COLCON_WS}/src/bluerov2_ignition/worlds:$GZ_SIM_RESOURCE_PATH
+# Add bluerov2_gz models and worlds
+export GZ_SIM_RESOURCE_PATH=${COLCON_WS}/src/bluerov2_gz/models:${COLCON_WS}/src/bluerov2_gz/worlds:$GZ_SIM_RESOURCE_PATH
 
 # Add orca4 models and worlds
 export GZ_SIM_RESOURCE_PATH=${COLCON_WS}/src/orca4/orca_description/models:${COLCON_WS}/src/orca4/orca_description/worlds:$GZ_SIM_RESOURCE_PATH
