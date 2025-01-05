@@ -71,9 +71,11 @@ rosdep update
 rosdep install -y --from-paths . --ignore-src --skip-keys="gz-transport12 gz-sim7 gz-math7 gz-msgs9"
 ~~~
 
-MAVROS depends on GeographicLib, and GeographicLib needs some datasets:
+MAVROS depends on GeographicLib, and [GeographicLib needs some datasets](https://ardupilot.org/dev/docs/ros-install.html):
 ~~~
-sudo mavros/mavros/scripts/install_geographiclib_datasets.sh
+wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
+chmod a+x install_geographiclib_datasets.sh
+sudo ./install_geographiclib_datasets.sh
 ~~~
 
 Build the workspace:
