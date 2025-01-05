@@ -16,7 +16,7 @@ fi
 
 
 # Add results of ArduSub build
-export PATH=$ARDUPILOT_HOME/build/sitl/bin:$PATH
+export PATH=${ARDUPILOT_HOME}/build/sitl/bin:$PATH
 
 # Add results of colcon build
 source ${COLCON_WS}/install/setup.bash
@@ -30,5 +30,5 @@ export GZ_SIM_RESOURCE_PATH=${COLCON_WS}/src/bluerov2_gz/models:${COLCON_WS}/src
 # Add orca4 models and worlds
 export GZ_SIM_RESOURCE_PATH=${COLCON_WS}/src/orca4/orca_description/models:${COLCON_WS}/src/orca4/orca_description/worlds:$GZ_SIM_RESOURCE_PATH
 
-# Build ros_gz on the humble branch for Gazebo Garden
-export GZ_VERSION=garden
+# Build ros_gz on the humble branch for Gazebo Harmonic
+export GZ_VERSION=harmonic

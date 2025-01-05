@@ -24,12 +24,13 @@ RUN apt-get update \
     vim \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Gazebo Garden
+# Install Gazebo Harmonic for use with ROS2 Humble
 RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
 RUN apt-get update \
   && apt-get -y --quiet --no-install-recommends install \
-    gz-garden \
+    gz-harmonic \
+    ros-humble-ros-gzharmonic \
   && rm -rf /var/lib/apt/lists/*
 
 # Install NVIDIA software
@@ -46,13 +47,13 @@ ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=graphics,utility,compute
 ENV QT_X11_NO_MITSHM=1
 
-# Install some ardupilot and ardupilot_gazebo prereqs (libgz-sim7-dev is for gz garden)
+# Install some ardupilot and ardupilot_gazebo prereqs (libgz-sim8-dev is for gz harmonic)
 RUN apt-get update \
   && apt-get -y --quiet --no-install-recommends install \
     python3-wxgtk4.0 \
     rapidjson-dev \
     xterm \
-    libgz-sim7-dev \
+    libgz-sim8-dev \
     libopencv-dev \
     libgstreamer1.0-dev \
     libgstreamer-plugins-base1.0-dev \
@@ -95,8 +96,8 @@ RUN modules/waf/waf-light configure --board sitl \
 WORKDIR /home/$USERNAME
 RUN git clone https://github.com/ArduPilot/ardupilot_gazebo.git
 
-# Build for Gazebo Garden, define this before building ardupilot_gazebo and ros_gz
-ENV GZ_VERSION=garden
+# Build for Gazebo Harmonic, define this before building ardupilot_gazebo and ros_gz
+ENV GZ_VERSION=harmonic
 
 # Build ardupilot_gazebo
 RUN [ "/bin/bash" , "-c" , " \
@@ -122,11 +123,9 @@ WORKDIR /home/$USERNAME/colcon_ws/src
 RUN vcs import < orca4/workspace.repos
 
 # Run rosdep over workspace repos
-# Note: ros_gz asks for some Gazebo Garden keys which are not yet present in rosdistro.
-# This is fine, since Gazebo Garden has already been installed.
 WORKDIR /home/$USERNAME/colcon_ws
 RUN rosdep update \
-  && rosdep install -y --from-paths . --ignore-src --skip-keys="gz-transport12 gz-sim7 gz-math7 gz-msgs9"
+  && rosdep install -y --from-paths . --ignore-src
 
 # Build everything so far
 RUN [ "/bin/bash" , "-c" , "\
@@ -143,7 +142,7 @@ COPY --chown=$USER_UID:$USER_GID orca_shared/package.xml src/orca4/orca_shared/
 
 # Run rosdep over orca4 package.xml files
 RUN rosdep update \
-  && rosdep install -y --from-paths . --ignore-src --skip-keys="gz-transport12 gz-sim7 gz-math7 gz-msgs9"
+  && rosdep install -y --from-paths . --ignore-src
 
 # MAVROS depends on GeographicLib, and GeographicLib needs some datasets
 RUN [ "/bin/bash" , "-c" , "\

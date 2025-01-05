@@ -6,7 +6,7 @@ Vehicle) functionality for the [BlueRobotics BlueROV2](https://www.bluerobotics.
 Orca4 uses [ArduSub](http://www.ardusub.com/) as the flight controller and
 [mavros](https://github.com/mavlink/mavros) as the GCS.
 
-Orca4 runs in [Gazebo Garden](https://gazebosim.org/home) using the standard buoyancy, hydrodynamics and thruster
+Orca4 runs in [Gazebo Harmonic](https://gazebosim.org/home) using the standard buoyancy, hydrodynamics and thruster
 plugins. The connection between ArduSub and Gazebo is provided by [ardupilot_gazebo](https://github.com/ArduPilot/ardupilot_gazebo).
 
 ## Sensors
@@ -40,8 +40,9 @@ See the [Dockerfile](docker/Dockerfile) for installation details.
 
 Install these packages:
 * [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
-* [Gazebo Garden 7.1.0](https://gazebosim.org/docs/garden/install)
-* [ardupilot_gazebo](https://github.com/ArduPilot/ardupilot_gazebo)
+* [Gazebo Harmonic](https://gazebosim.org/docs/harmonic/install)
+* [ros_gz for Humble + Harmonic (ros-humble-gzharmonic)](https://gazebosim.org/docs/latest/ros_installation/)
+* [ardupilot_gazebo for Harmonic](https://github.com/ArduPilot/ardupilot_gazebo)
 * [ArduSub](https://ardupilot.org/dev/docs/building-setup-linux.html)
 
 Build ArduSub for SITL:
@@ -60,15 +61,10 @@ vcs import < orca4/workspace.repos
 ~~~
 
 
-Build ros_gz for Garden, not Fortress:
-~~~
-export GZ_VERSION=garden
-~~~
-
-Get dependencies, ignoring Gazebo Garden rosdep keys:
+Get dependencies:
 ~~~
 rosdep update
-rosdep install -y --from-paths . --ignore-src --skip-keys="gz-transport12 gz-sim7 gz-math7 gz-msgs9"
+rosdep install -y --from-paths . --ignore-src
 ~~~
 
 MAVROS depends on GeographicLib, and [GeographicLib needs some datasets](https://ardupilot.org/dev/docs/ros-install.html):
