@@ -40,6 +40,47 @@
         </geometry>
       </collision>
 
+      <sensor name="dvl_sensor" type="custom" gz:type="dvl">
+        <always_on>1</always_on>
+        <update_rate>100</update_rate>
+        <pose>0 0 -0.05 0 0 0</pose>
+        <topic>/dvl</topic>
+       <gz:dvl>
+         <arrangement degrees="true">
+          <beam id="1">
+            <aperture>2</aperture>
+            <rotation>45</rotation>
+            <tilt>30</tilt>
+           </beam>
+           <beam>
+            <aperture>2</aperture>
+            <rotation>135</rotation>
+            <tilt>30</tilt>
+           </beam>
+           <beam>
+            <aperture>2</aperture>
+            <rotation>-135</rotation>
+            <tilt>30</tilt>
+           </beam>
+           <beam>
+            <aperture>2</aperture>
+            <rotation>-45</rotation>
+            <tilt>30</tilt>
+           </beam>
+           <visualize>false</visualize>
+         </arrangement>
+         <tracking>
+          <bottom_mode>
+            <when>always</when>
+            <visualize>false</visualize>
+          </bottom_mode>
+         </tracking>
+         <minimum_range>0.1</minimum_range>
+         <maximum_range>100</maximum_range>
+         <resolution>0.01</resolution>
+       </gz:dvl>
+     </sensor>
+
       <!-- IMU sensor gyro and accel data will be sent to ArduSub -->
       <sensor name="imu_sensor" type="imu">
         <!-- Transform from the Gazebo body frame (x-forward, y-left, z-up)
