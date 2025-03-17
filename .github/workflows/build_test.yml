@@ -30,7 +30,7 @@ jobs:
           path: tmp_ws
 
       # Note that action-ros-ci will rm -rf ros_ws
-      - uses: ros-tooling/action-ros-ci@0.3.15
+      - uses: ros-tooling/action-ros-ci@0.4.1
         with:
           package-name: |
             orca_base
