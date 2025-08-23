@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "McQueen"
+  given-names: "Clyde"
+  orcid: "https://orcid.org/0009-0007-9179-318X"
+title: "orca4: ROS2 AUV based on the BlueROV2, ArduSub and Navigation2"
+version: 0.1.0
+date-released: 2022-06-17
+url: "https://github.com/clydemcqueen/orca4"
