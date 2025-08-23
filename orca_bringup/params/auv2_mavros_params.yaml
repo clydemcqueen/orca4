@@ -1,0 +1,47 @@
+# MAVROS parameters for AUV2 (I1)
+# Connect to the FCU (ArduSub) and pass messages to/from the GCS (QGroundControl, mavproxy)
+#
+# See https://github.com/mavlink/mavros/tree/ros2/mavros for connection schemas and defaults
+#
+#     udp://[bind_host][:port]@[remote_host[:port]][/?ids=sysid,compid]
+#     udp default ports: 14555@14550
+#
+#     tcp://[server_host][:port][/?ids=sysid,compid]
+#     tcp default port: 5760
+
+mavros:
+  ros__parameters:
+    system_id: 1
+
+    # /mavros/local_position/pose requires 2 plugins:
+    #     imu handles the ATTITUDE_QUATERNION msg (MAV id 31)
+    #     local_position handles the LOCAL_POSITION_NED msg (MAV id 32)
+    # Also be sure to set the message interval to ~50ms for these 2 messages
+
+    # The vision_pose plugin is provided by mavros_extras.
+    # MAVROS will not complain if this package is missing.
+
+    plugin_allowlist:
+      - sys_status
+      - command
+      - imu
+      - local_position
+      - rc_io
+      - setpoint_position
+      - vision_pose
+
+mavros_node:
+  ros__parameters:
+    fcu_url: "tcp://localhost:5770"
+    gcs_url: "udp://@localhost:14560"
+
+mavros/local_position:
+  ros__parameters:
+    frame_id: "auv2/map"  # frame_id of /auv2/mavros/local_position/pose, etc.
+    tf:
+      send: false  # Do not publish tf
+
+mavros/vision_pose:
+  ros__parameters:
+    tf:
+      listen: false  # Do not listen to tf

@@ -44,6 +44,10 @@ endif()
 install(
   PROGRAMS  # PROGRAMS sets execute bits, FILES clears them
   scripts/test_base.py
+  scripts/formation_controller.py
+  scripts/multi_auv_path_publisher.py
+  scripts/formation_mission_runner.py
+  scripts/auto_connector.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

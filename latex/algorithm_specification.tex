@@ -1,0 +1,647 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{natbib}
+
+% Page setup
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thepage}
+\lhead{MADDPG+RBF Algorithm Specification}
+
+% Color definitions
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Algorithm style
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+
+% Custom commands
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\Real}{\mathbb{R}}
+
+\title{\textbf{MADDPG+RBF Formation Control Algorithm: \\ Detailed Pseudocode and Implementation Specification}}
+
+\author{
+    Algorithm Development Team\\
+    Multi-Agent Systems Research Group\\
+    \texttt{algorithms@example.edu}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This document provides comprehensive pseudocode and implementation details for the Multi-Agent Deep Deterministic Policy Gradient with Radial Basis Function (MADDPG+RBF) formation control algorithm. The algorithm is specifically designed for coordinating multiple autonomous underwater vehicles (AUVs) in formation, combining the advantages of deep reinforcement learning with the computational efficiency of RBF networks. The specification includes detailed algorithmic components, mathematical formulations, and implementation guidelines for practical deployment in multi-AUV systems.
+
+\textbf{Keywords:} MADDPG, RBF networks, Formation control, Multi-agent reinforcement learning, Autonomous underwater vehicles, Algorithm specification
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+The Multi-Agent Deep Deterministic Policy Gradient with Radial Basis Function (MADDPG+RBF) algorithm represents a novel approach to multi-agent formation control, specifically tailored for autonomous underwater vehicle (AUV) coordination. This algorithm combines the theoretical foundations of deep reinforcement learning with the computational efficiency of radial basis function networks.
+
+The key innovations of this algorithm include:
+\begin{itemize}
+    \item Integration of MADDPG framework for multi-agent coordination
+    \item RBF network approximation for real-time control decisions
+    \item Adaptive formation maintenance with collision avoidance
+    \item Scalable architecture for varying numbers of agents
+\end{itemize}
+
+\section{Algorithm Overview}
+
+\subsection{System Configuration}
+
+The algorithm operates on a multi-AUV system with the following configuration:
+\begin{itemize}
+    \item $N = 3$ AUVs: 1 leader + 2 followers
+    \item Formation configuration: $\Delta = \{\Delta_{12}, \Delta_{13}\}$
+    \item Control parameters: $K_p$, maximum speeds, update rate
+\end{itemize}
+
+\subsection{Main Algorithm Structure}
+
+\begin{algorithm}[H]
+\caption{MADDPG+RBF Formation Control}
+\label{alg:main}
+\begin{algorithmic}[1]
+\Require $N$ AUVs, formation configuration $\Delta$, control parameters
+\Ensure Velocity commands for follower AUVs, formation maintenance
+
+\State \textbf{Initialize:}
+\State \quad RBF networks for each follower AUV
+\State \quad Formation parameters: $\Delta_{12} = (-5, 2)$, $\Delta_{13} = (-5, -2)$
+\State \quad Control gains: $K_p = 0.3$, $v_{max} = 2.0$, $\omega_{max} = 1.0$
+
+\While{system active}
+    \State \textbf{Step 1: State Observation}
+    \State $\vect{s}_{leader} \leftarrow$ GET\_ODOMETRY("/model/auv1/odometry")
+    \State $\vect{s}_{auv2} \leftarrow$ GET\_ODOMETRY("/model/auv2/odometry")
+    \State $\vect{s}_{auv3} \leftarrow$ GET\_ODOMETRY("/model/auv3/odometry")
+    
+    \For{each follower AUV $j \in \{2, 3\}$}
+        \State \textbf{Step 2: Formation Position Calculation}
+        \State $\vect{p}_{j,des} \leftarrow$ CALCULATE\_FORMATION\_POSITION($\vect{s}_{leader}$, $\Delta_{1j}$)
+        
+        \State \textbf{Step 3: MADDPG+RBF Control}
+        \State $\vect{a}_j \leftarrow$ MADDPG\_RBF\_CONTROL($\vect{s}_j$, $\vect{p}_{j,des}$, $\vect{v}_{leader}$)
+        
+        \State \textbf{Step 4: Safety Constraints}
+        \State $\vect{a}_{j,safe} \leftarrow$ APPLY\_SAFETY\_LIMITS($\vect{a}_j$)
+        
+        \State \textbf{Step 5: Command Publication}
+        \State PUBLISH\_VELOCITY\_COMMAND($j$, $\vect{a}_{j,safe}$)
+    \EndFor
+    
+    \State \textbf{Step 6: Network Update}
+    \State UPDATE\_RBF\_NETWORKS(experience buffer)
+    
+    \State SLEEP($1/20$) \Comment{20Hz control rate}
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\section{MADDPG Components}
+
+\subsection{Actor Network Implementation}
+
+The actor network utilizes RBF approximation for efficient real-time control:
+
+\begin{algorithm}[H]
+\caption{MADDPG+RBF Control Function}
+\label{alg:control}
+\begin{algorithmic}[1]
+\Require Current state $\vect{s}$, desired state $\vect{s}_{des}$, leader velocity $\vect{v}_{leader}$
+\Ensure Control action $\vect{a} = [v_{linear}, \omega_{angular}]$
+
+\State \textbf{Step 1: State Vector Construction}
+\State $\vect{x} \leftarrow [s_x, s_y, s_{v_x}, s_{v_y}, e_x, e_y, v_{leader,x}, v_{leader,y}]^T$
+\State where $\vect{e} = \vect{s}_{des} - \vect{s}$ (formation error)
+
+\State \textbf{Step 2: RBF Network Forward Pass}
+\State $\vect{a}_{rbf} \leftarrow$ RBF\_FORWARD\_PASS($\vect{x}$)
+
+\State \textbf{Step 3: Proportional Control Component}
+\State $\vect{a}_{prop} \leftarrow K_p \cdot \vect{e}$
+
+\State \textbf{Step 4: Action Combination}
+\State $\vect{a}_{raw} \leftarrow \vect{a}_{rbf} + \vect{a}_{prop} + \vect{v}_{leader}$
+
+\State \textbf{Step 5: Action Clipping}
+\State $\vect{a} \leftarrow$ CLIP\_ACTIONS($\vect{a}_{raw}$, $v_{max}$, $\omega_{max}$)
+
+\Return $\vect{a}$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Critic Network Architecture}
+
+The critic network provides centralized value estimation:
+
+\begin{algorithm}[H]
+\caption{MADDPG Critic Network}
+\label{alg:critic}
+\begin{algorithmic}[1]
+\Require Joint state $\vect{S}$, joint action $\vect{A}$
+\Ensure Q-value estimate $Q(\vect{S}, \vect{A})$
+
+\State \textbf{Global State Construction}
+\State $\vect{S}_{global} \leftarrow$ CONCATENATE($[\vect{s}_1, \vect{s}_2, \vect{s}_3]$)
+\State $\vect{A}_{global} \leftarrow$ CONCATENATE($[\vect{a}_1, \vect{a}_2, \vect{a}_3]$)
+
+\State \textbf{Multi-layer Perceptron}
+\State $\vect{h}_1 \leftarrow$ RELU($\vect{W}_1 \vect{S}_{global} + \vect{b}_1$)
+\State $\vect{h}_2 \leftarrow$ RELU($\vect{W}_2$ CONCATENATE($[\vect{h}_1, \vect{A}_{global}]$) $+ \vect{b}_2$)
+\State $Q \leftarrow \vect{W}_3^T \vect{h}_2 + b_3$
+
+\Return $Q$
+\end{algorithmic}
+\end{algorithm}
+
+\section{RBF Network Implementation}
+
+\subsection{RBF Forward Pass}
+
+\begin{algorithm}[H]
+\caption{RBF Network Forward Pass}
+\label{alg:rbf_forward}
+\begin{algorithmic}[1]
+\Require Input state $\vect{x} \in \Real^8$
+\Ensure Action output $\vect{a} = [v_{linear}, \omega_{angular}]$
+
+\State \textbf{Network Parameters}
+\State $n_{centers} \leftarrow 5$
+\State $\vect{C} \leftarrow [\vect{c}_1, \vect{c}_2, \ldots, \vect{c}_5]$ \Comment{RBF centers}
+\State $\vect{W} \leftarrow [\vect{w}_1, \vect{w}_2, \ldots, \vect{w}_5]$ \Comment{Learned weights}
+\State $\gamma \leftarrow 1.0$ \Comment{Width parameter}
+
+\State \textbf{RBF Activation Calculation}
+\For{$i = 1$ to $n_{centers}$}
+    \State $d_i^2 \leftarrow \|\vect{x} - \vect{c}_i\|^2$
+    \State $\phi_i \leftarrow \exp(-\gamma \cdot d_i^2)$
+\EndFor
+
+\State \textbf{Weighted Output}
+\State $v_{linear} \leftarrow \sum_{i=1}^{n_{centers}} w_{i,linear} \cdot \phi_i$
+\State $\omega_{angular} \leftarrow \sum_{i=1}^{n_{centers}} w_{i,angular} \cdot \phi_i$
+
+\Return $[v_{linear}, \omega_{angular}]$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{RBF Learning Update}
+
+\begin{algorithm}[H]
+\caption{RBF Network Learning Update}
+\label{alg:rbf_update}
+\begin{algorithmic}[1]
+\Require Experience buffer $\mathcal{B}$
+\Ensure Updated RBF network weights
+
+\State \textbf{Experience Replay}
+\State $\mathcal{B}_{batch} \leftarrow$ SAMPLE\_RANDOM\_BATCH($\mathcal{B}$, batch\_size = 32)
+
+\For{each experience $(\vect{s}, \vect{a}, r, \vect{s}')$ in $\mathcal{B}_{batch}$}
+    \State \textbf{TD Target Calculation}
+    \State $\vect{a}' \leftarrow$ RBF\_FORWARD\_PASS($\vect{s}'$)
+    \State $Q_{target} \leftarrow r + \gamma \cdot$ CRITIC\_NETWORK($\vect{s}'$, $\vect{a}'$)
+    
+    \State \textbf{Current Q-value}
+    \State $Q_{current} \leftarrow$ CRITIC\_NETWORK($\vect{s}$, $\vect{a}$)
+    
+    \State \textbf{TD Error}
+    \State $\delta \leftarrow Q_{target} - Q_{current}$
+    
+    \State \textbf{Weight Update}
+    \State $\vect{\phi} \leftarrow$ CALCULATE\_RBF\_ACTIVATIONS($\vect{s}$)
+    \State $\nabla_W \leftarrow \delta \cdot \vect{\phi}$
+    \State $\vect{W} \leftarrow \vect{W} + \alpha \cdot \nabla_W$
+\EndFor
+
+\State \textbf{Target Network Update}
+\State $\vect{W}_{target} \leftarrow \tau \vect{W} + (1 - \tau) \vect{W}_{target}$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Formation Control Logic}
+
+\subsection{Formation Position Calculation}
+
+\begin{algorithm}[H]
+\caption{Formation Position Calculation}
+\label{alg:formation_pos}
+\begin{algorithmic}[1]
+\Require Leader state $\vect{s}_{leader}$, formation offset $\Delta_{ij}$
+\Ensure Desired position $\vect{p}_{j,des}$
+
+\State \textbf{Extract Leader Information}
+\State $[x_1, y_1, \psi_1] \leftarrow \vect{s}_{leader}$
+\State $[\Delta_x, \Delta_y] \leftarrow \Delta_{ij}$
+
+\State \textbf{Rotation Matrix Construction}
+\State $\vect{R}(\psi_1) \leftarrow \begin{bmatrix}
+\cos(\psi_1) & -\sin(\psi_1) \\
+\sin(\psi_1) & \cos(\psi_1)
+\end{bmatrix}$
+
+\State \textbf{Desired Position Calculation}
+\State $\begin{bmatrix} x_{des} \\ y_{des} \end{bmatrix} \leftarrow \begin{bmatrix} x_1 \\ y_1 \end{bmatrix} + \vect{R}(\psi_1) \begin{bmatrix} \Delta_x \\ \Delta_y \end{bmatrix}$
+
+\Return $[x_{des}, y_{des}, \psi_1]$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Safety Constraint Application}
+
+\begin{algorithm}[H]
+\caption{Safety Constraint Application}
+\label{alg:safety}
+\begin{algorithmic}[1]
+\Require Raw action $\vect{a}_{raw} = [v_{raw}, \omega_{raw}]$
+\Ensure Safe action $\vect{a}_{safe} = [v_{safe}, \omega_{safe}]$
+
+\State \textbf{Speed Limiting}
+\State $v_{safe} \leftarrow$ CLIP($v_{raw}$, $-v_{max}$, $v_{max}$)
+\State $\omega_{safe} \leftarrow$ CLIP($\omega_{raw}$, $-\omega_{max}$, $\omega_{max}$)
+
+\State \textbf{Collision Avoidance Check}
+\If{COLLISION\_IMMINENT($\vect{a}_{safe}$)}
+    \State $\vect{a}_{safe} \leftarrow$ EMERGENCY\_STOP()
+\EndIf
+
+\State \textbf{Formation Boundary Check}
+\If{FORMATION\_BOUNDARY\_VIOLATED($\vect{a}_{safe}$)}
+    \State $\vect{a}_{safe} \leftarrow$ PROJECT\_TO\_BOUNDARY($\vect{a}_{safe}$)
+\EndIf
+
+\Return $\vect{a}_{safe}$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Mission Coordination}
+
+\subsection{Leader Trajectory Control}
+
+\begin{algorithm}[H]
+\caption{Leader Trajectory Control}
+\label{alg:leader}
+\begin{algorithmic}[1]
+\Require Mission type, current time $t$
+\Ensure Leader velocity command $\vect{v}_{leader}$
+
+\If{mission\_type = "SINE\_WAVE"}
+    \State $v_{forward} \leftarrow 0.5$ \Comment{m/s}
+    \State $A \leftarrow 5.0$ \Comment{Amplitude}
+    \State $\omega \leftarrow 2\pi/20$ \Comment{Angular frequency}
+    \State $x_{target}(t) \leftarrow v_{forward} \cdot t$
+    \State $y_{target}(t) \leftarrow A \cdot \sin(\omega \cdot t)$
+    \State $\vect{v}_{leader} \leftarrow$ CALCULATE\_VELOCITY\_TO\_TARGET($x_{target}$, $y_{target}$)
+
+\ElsIf{mission\_type = "WAYPOINT"}
+    \State $\vect{p}_{current} \leftarrow$ GET\_CURRENT\_WAYPOINT()
+    \If{WAYPOINT\_REACHED($\vect{p}_{current}$)}
+        \State ADVANCE\_TO\_NEXT\_WAYPOINT()
+    \EndIf
+    \State $\vect{v}_{leader} \leftarrow$ CALCULATE\_VELOCITY\_TO\_WAYPOINT()
+
+\Else \Comment{Basic maneuvers}
+    \State $\vect{v}_{leader} \leftarrow$ EXECUTE\_BASIC\_MANEUVER($t$)
+\EndIf
+
+\Return $\vect{v}_{leader}$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Reward Function Calculation}
+
+\begin{algorithm}[H]
+\caption{Reward Function Calculation}
+\label{alg:reward_calc}
+\begin{algorithmic}[1]
+\Require AUV state $\vect{s}$, desired state $\vect{s}_{des}$, action $\vect{a}$, collision flag
+\Ensure Reward value $r$
+
+\State \textbf{Formation Error Penalty}
+\State $\vect{e}_{pos} \leftarrow \|\vect{s}_{pos} - \vect{s}_{des,pos}\|$
+\State $r_{formation} \leftarrow -\alpha \cdot \vect{e}_{pos}^2$
+
+\State \textbf{Control Effort Penalty}
+\State $r_{control} \leftarrow -\beta \cdot (\vect{a}_{linear}^2 + \vect{a}_{angular}^2)$
+
+\State \textbf{Collision Penalty}
+\If{collision detected}
+    \State $r_{collision} \leftarrow -1000.0$
+\Else
+    \State $r_{collision} \leftarrow 0.0$
+\EndIf
+
+\State \textbf{Formation Maintenance Bonus}
+\If{$\vect{e}_{pos} <$ formation\_tolerance}
+    \State $r_{bonus} \leftarrow 10.0$
+\Else
+    \State $r_{bonus} \leftarrow 0.0$
+\EndIf
+
+\State $r \leftarrow r_{formation} + r_{control} + r_{collision} + r_{bonus}$
+\Return $r$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Formation Mission Runner}
+
+\begin{algorithm}[H]
+\caption{Formation Mission Coordination}
+\label{alg:mission_coordination}
+\begin{algorithmic}[1]
+\Require Mission type, trajectory parameters, formation configuration
+\Ensure Coordinated multi-AUV formation execution
+
+\State \textbf{Step 1: System Initialization}
+\State INITIALIZE\_BASE\_CONTROLLERS([auv1, auv2, auv3])
+\State WAIT\_FOR\_MAVROS\_CONNECTION(timeout = 30s)
+\State ENABLE\_FORMATION\_CONTROLLER()
+
+\State \textbf{Step 2: Mission Selection and Execution}
+\Switch{mission\_type}
+    \Case{"basic\_maneuvers"}
+        \State EXECUTE\_BASIC\_MANEUVERS()
+    \EndCase
+    \Case{"waypoint\_trajectory"}
+        \State EXECUTE\_WAYPOINT\_MISSION()
+    \EndCase
+    \Case{"sine\_wave"}
+        \State EXECUTE\_SINE\_WAVE\_TRAJECTORY()
+    \EndCase
+    \Case{default}
+        \State LOG\_ERROR("Unknown mission type")
+    \EndCase
+\EndSwitch
+
+\State \textbf{Step 3: Mission Monitoring}
+\While{mission active}
+    \State $e_{formation} \leftarrow$ CHECK\_FORMATION\_ERROR()
+    \If{$e_{formation} >$ error\_threshold}
+        \State TRIGGER\_FORMATION\_RECOVERY()
+    \EndIf
+    \If{MISSION\_COMPLETE()}
+        \State STOP\_ALL\_AUVS()
+        \State \textbf{break}
+    \EndIf
+    \State SLEEP(0.1) \Comment{10Hz monitoring rate}
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Waypoint Mission Implementation}
+
+\begin{algorithm}[H]
+\caption{Waypoint Mission Execution}
+\label{alg:waypoint_mission}
+\begin{algorithmic}[1]
+\Require Waypoint list, tolerance parameters
+\Ensure Sequential waypoint navigation
+
+\State \textbf{Waypoint Initialization}
+\State waypoints $\leftarrow$ [[0, 0, 0], [20, -13, -2], [10, -23, -5], [-10, -8, -3], [0, 0, 0]]
+\State current\_waypoint $\leftarrow$ 0
+\State waypoint\_tolerance $\leftarrow$ 1.0 \Comment{meters}
+
+\While{current\_waypoint < LENGTH(waypoints)}
+    \State target $\leftarrow$ waypoints[current\_waypoint]
+    
+    \State \textbf{Leader Navigation}
+    \State MOVE\_LEADER\_TO\_WAYPOINT(target)
+    
+    \State \textbf{Waypoint Completion Check}
+    \State leader\_position $\leftarrow$ GET\_LEADER\_POSITION()
+    \State distance\_to\_target $\leftarrow$ $\|$leader\_position - target$\|$
+    
+    \If{distance\_to\_target < waypoint\_tolerance}
+        \State current\_waypoint $\leftarrow$ current\_waypoint + 1
+        \State LOG\_INFO("Waypoint " + current\_waypoint + " reached")
+    \EndIf
+    
+    \State SLEEP(0.1)
+\EndWhile
+
+\State LOG\_INFO("Waypoint mission completed")
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Sine Wave Trajectory Execution}
+
+\begin{algorithm}[H]
+\caption{Sine Wave Trajectory Control}
+\label{alg:sine_wave}
+\begin{algorithmic}[1]
+\Require Amplitude $A = 5.0$, frequency $f = 0.1$, speed $v = 0.5$
+\Ensure Continuous sine wave trajectory execution
+
+\State start\_time $\leftarrow$ GET\_CURRENT\_TIME()
+
+\While{mission active}
+    \State current\_time $\leftarrow$ GET\_CURRENT\_TIME()
+    \State $t \leftarrow$ current\_time - start\_time
+    
+    \State \textbf{Trajectory Calculation}
+    \State $x_{target} \leftarrow v \cdot t$
+    \State $y_{target} \leftarrow A \cdot \sin(2\pi f \cdot t)$
+    
+    \State \textbf{Velocity Command Generation}
+    \State $v_{x,target} \leftarrow v$
+    \State $v_{y,target} \leftarrow A \cdot 2\pi f \cdot \cos(2\pi f \cdot t)$
+    
+    \State \textbf{Command Publication}
+    \State leader\_cmd $\leftarrow$ CREATE\_TWIST\_MESSAGE($v_{x,target}$, $v_{y,target}$, 0)
+    \State PUBLISH\_LEADER\_COMMAND(leader\_cmd)
+    
+    \State SLEEP($1/20$) \Comment{20Hz update rate}
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\section{Safety and Collision Avoidance}
+
+\subsection{Safety Constraint Implementation}
+
+\begin{algorithm}[H]
+\caption{Safety Constraint Application}
+\label{alg:safety_extended}
+\begin{algorithmic}[1]
+\Require Control action $\vect{a}$, AUV states, safety distance $d_{safe} = 2.0$m
+\Ensure Safe control action $\vect{a}_{safe}$
+
+\State $\vect{a}_{safe} \leftarrow \vect{a}$
+
+\State \textbf{Collision Avoidance Check}
+\For{each other\_auv in AUV\_states}
+    \State distance $\leftarrow$ $\|$current\_auv.position - other\_auv.position$\|$
+    
+    \If{distance < $d_{safe}$}
+        \State \textbf{Calculate Avoidance Vector}
+        \State avoidance\_direction $\leftarrow$ NORMALIZE(current\_auv.position - other\_auv.position)
+        \State avoidance\_force $\leftarrow$ avoidance\_direction $\times$ collision\_avoidance\_gain
+        
+        \State \textbf{Modify Action}
+        \State $\vect{a}_{safe}.linear \leftarrow \vect{a}_{safe}.linear +$ avoidance\_force
+    \EndIf
+\EndFor
+
+\State \textbf{Speed Limiting}
+\State $\vect{a}_{safe}.linear \leftarrow$ CLIP($\vect{a}_{safe}.linear$, $-v_{max}$, $v_{max}$)
+\State $\vect{a}_{safe}.angular \leftarrow$ CLIP($\vect{a}_{safe}.angular$, $-\omega_{max}$, $\omega_{max}$)
+
+\Return $\vect{a}_{safe}$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Error Recovery and Fault Tolerance}
+
+\begin{algorithm}[H]
+\caption{Formation Recovery System}
+\label{alg:recovery}
+\begin{algorithmic}[1]
+\Require Formation error threshold exceeded
+\Ensure System recovery and formation restoration
+
+\State LOG\_WARNING("Formation error detected, initiating recovery")
+
+\State \textbf{Step 1: Emergency Stop}
+\For{each auv in [auv1, auv2, auv3]}
+    \State SEND\_STOP\_COMMAND(auv)
+\EndFor
+\State SLEEP(2.0) \Comment{Allow AUVs to stop}
+
+\State \textbf{Step 2: Controller Reset}
+\State RESTART\_FORMATION\_CONTROLLER()
+
+\State \textbf{Step 3: Gradual Formation Restoration}
+\For{each follower in [auv2, auv3]}
+    \State GRADUALLY\_RESTORE\_FORMATION(follower, restore\_speed = 0.3)
+\EndFor
+
+\State LOG\_INFO("Formation recovery completed")
+\end{algorithmic}
+\end{algorithm}
+
+\section{Algorithm Parameters and Constants}
+
+\subsection{System Configuration Parameters}
+
+\begin{table}[h!]
+\centering
+\caption{Complete Algorithm Parameter Specification}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Parameter Category} & \textbf{Parameter} & \textbf{Value} \\
+\midrule
+\multirow{2}{*}{Formation Configuration} & Formation Distance & 5.0 m \\
+ & Formation Offset & ±2.0 m \\
+\midrule
+\multirow{4}{*}{Control Parameters} & Proportional Gain ($K_p$) & 0.3 \\
+ & Max Linear Speed & 2.0 m/s \\
+ & Max Angular Speed & 1.0 rad/s \\
+ & Control Frequency & 20 Hz \\
+\midrule
+\multirow{3}{*}{RBF Network} & RBF Centers & 5 \\
+ & RBF Width ($\gamma$) & 1.0 \\
+ & Learning Rate & 0.001 \\
+\midrule
+\multirow{3}{*}{Reward Function} & Formation Error Weight ($\alpha$) & 1.0 \\
+ & Control Effort Weight ($\beta$) & 0.1 \\
+ & Discount Factor ($\gamma$) & 0.99 \\
+\midrule
+\multirow{3}{*}{Safety Parameters} & Safety Distance & 2.0 m \\
+ & Formation Tolerance & 1.0 m \\
+ & Waypoint Tolerance & 1.0 m \\
+\bottomrule
+\end{tabular}
+\label{tab:complete_parameters}
+\end{table}
+
+\subsection{Performance Benchmarks}
+
+The algorithm implementation targets the following performance metrics:
+
+\begin{itemize}
+    \item \textbf{Formation Accuracy}: RMS error < 1.0m during steady-state
+    \item \textbf{Response Time}: < 2.0 seconds to formation commands
+    \item \textbf{Computational Efficiency}: Real-time operation at 20Hz
+    \item \textbf{Safety Compliance}: Zero collisions during normal operation
+    \item \textbf{Mission Completion Rate}: > 95\% successful mission completion
+\end{itemize}
+
+\section{Implementation Verification}
+
+\subsection{Algorithm Validation Framework}
+
+\begin{algorithm}[H]
+\caption{Algorithm Validation Procedure}
+\label{alg:validation}
+\begin{algorithmic}[1]
+\Require Test scenarios, performance metrics
+\Ensure Algorithm validation results
+
+\State \textbf{Test Scenario 1: Basic Formation}
+\For{trial = 1 to 10}
+    \State EXECUTE\_BASIC\_FORMATION\_TEST()
+    \State RECORD\_PERFORMANCE\_METRICS()
+\EndFor
+
+\State \textbf{Test Scenario 2: Complex Maneuvers}
+\For{trial = 1 to 10}
+    \State EXECUTE\_WAYPOINT\_TRAJECTORY\_TEST()
+    \State RECORD\_PERFORMANCE\_METRICS()
+\EndFor
+
+\State \textbf{Test Scenario 3: Disturbance Rejection}
+\For{trial = 1 to 10}
+    \State EXECUTE\_DISTURBANCE\_TEST()
+    \State RECORD\_PERFORMANCE\_METRICS()
+\EndFor
+
+\State \textbf{Performance Analysis}
+\State CALCULATE\_STATISTICAL\_METRICS()
+\State GENERATE\_VALIDATION\_REPORT()
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Debugging and Monitoring Framework}
+
+Essential monitoring capabilities for algorithm development and deployment:
+
+\begin{itemize}
+    \item \textbf{Real-time Metrics}: Formation error magnitude, control action smoothness
+    \item \textbf{Learning Progress}: Q-value estimates, TD error trends, RBF activation patterns
+    \item \textbf{Safety Monitoring}: Inter-vehicle distances, collision avoidance activations
+    \item \textbf{System Health}: Communication latencies, computational load, memory usage
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="multi_auv_sand">
+
+    <!-- Base Gazebo plugins -->
+    <plugin
+        filename="gz-sim-physics-system"
+        name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+        filename="gz-sim-user-commands-system"
+        name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+        filename="gz-sim-scene-broadcaster-system"
+        name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+        filename="gz-sim-sensors-system"
+        name="gz::sim::systems::Sensors">
+<!--      <render_engine>ogre</render_engine>-->
+    </plugin>
+
+    <!-- IMU plugin manages all IMU sensors -->
+    <plugin
+        filename="libgz-sim-imu-system.so"
+        name="gz::sim::systems::Imu">
+    </plugin>
+
+    <!-- Buoyancy plugin manages buoyancy for all models -->
+    <plugin
+        filename="gz-sim-buoyancy-system"
+        name="gz::sim::systems::Buoyancy">
+      <!-- Fluid density is 1 (air) above 0 and 1000 (water) below 0 -->
+      <graded_buoyancy>
+        <default_density>1000</default_density>
+        <density_change>
+          <above_depth>0</above_depth>
+          <density>1</density>
+        </density_change>
+      </graded_buoyancy>
+      <!-- Enable for all AUV models -->
+      <enable>auv1</enable>
+      <enable>auv2</enable>
+      <enable>auv3</enable>
+    </plugin>
+
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
+    </include>
+
+    <include>
+     <uri>model://sand_heightmap</uri>
+     <pose>0 7 -10 0 0 0</pose>
+    </include>
+
+    <!-- AUV1 - Leader (center) -->
+    <include>
+      <uri>model://auv1</uri>
+      <pose>0 0 -0.2 0 0 0</pose>
+    </include>
+
+    <!-- AUV2 - Follower (left wing) -->
+    <include>
+      <uri>model://auv2</uri>
+      <pose>-2 2 -0.2 0 0 0</pose>
+    </include>
+
+    <!-- AUV3 - Follower (right wing) -->
+    <include>
+      <uri>model://auv3</uri>
+      <pose>-2 -2 -0.2 0 0 0</pose>
+    </include>
+
+    
+
+  </world>
+</sdf>
