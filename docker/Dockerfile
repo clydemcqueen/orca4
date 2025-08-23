@@ -24,7 +24,8 @@ RUN apt-get update \
     vim \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Gazebo Harmonic for use with ROS2 Humble
+# Install Gazebo Harmonic for use with ROS2 Humble. This is a non-standard configuration, so it takes a bit more care.
+# Ref https://gazebosim.org/docs/harmonic/ros_installation/
 RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
 RUN apt-get update \
@@ -32,6 +33,10 @@ RUN apt-get update \
     gz-harmonic \
     ros-humble-ros-gzharmonic \
   && rm -rf /var/lib/apt/lists/*
+
+# Add OSRF's rosdep rules so that rosdep will find Gazebo Harmonic keys
+# Ref https://github.com/ArduPilot/ardupilot_gazebo#Rosdep
+RUN wget https://raw.githubusercontent.com/osrf/osrf-rosdep/master/gz/00-gazebo.list -O /etc/ros/rosdep/sources.list.d/00-gazebo.list
 
 # Install NVIDIA software
 RUN apt-get update \
@@ -47,13 +52,12 @@ ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=graphics,utility,compute
 ENV QT_X11_NO_MITSHM=1
 
-# Install some ardupilot and ardupilot_gazebo prereqs (libgz-sim8-dev is for gz harmonic)
+# Install some ardupilot and ardupilot_gazebo prereqs
 RUN apt-get update \
   && apt-get -y --quiet --no-install-recommends install \
     python3-wxgtk4.0 \
     rapidjson-dev \
     xterm \
-    libgz-sim8-dev \
     libopencv-dev \
     libgstreamer1.0-dev \
     libgstreamer-plugins-base1.0-dev \
@@ -92,21 +96,8 @@ WORKDIR /home/$USERNAME/ardupilot
 RUN modules/waf/waf-light configure --board sitl \
   && modules/waf/waf-light build --target bin/ardusub
 
-# Clone ardupilot_gazebo code
-WORKDIR /home/$USERNAME
-RUN git clone https://github.com/ArduPilot/ardupilot_gazebo.git
-
 # Build for Gazebo Harmonic, define this before building ardupilot_gazebo and ros_gz
 ENV GZ_VERSION=harmonic
-
-# Build ardupilot_gazebo
-RUN [ "/bin/bash" , "-c" , " \
-  cd ardupilot_gazebo \
-  && git checkout 4b30a3d8 \
-  && mkdir build \
-  && cd build \
-  && cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-  && make -j4" ]
 
 # Break orca4 build into multiple stages to speed up 'docker build':
 # -- work that depends on workspace.repos

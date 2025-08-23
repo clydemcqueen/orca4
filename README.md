@@ -42,7 +42,6 @@ Install these packages:
 * [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
 * [Gazebo Harmonic](https://gazebosim.org/docs/harmonic/install)
 * [ros_gz for Humble + Harmonic (ros-humble-gzharmonic)](https://gazebosim.org/docs/latest/ros_installation/)
-* [ardupilot_gazebo for Harmonic](https://github.com/ArduPilot/ardupilot_gazebo)
 * [ArduSub](https://ardupilot.org/dev/docs/building-setup-linux.html)
 
 Build ArduSub for SITL:
