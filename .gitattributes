@@ -1,0 +1,7 @@
+# Shell scripts run inside WSL and must keep LF endings. Without this, a
+# checkout on Windows with core.autocrlf=true rewrites them to CRLF and bash
+# fails with "bad interpreter: /usr/bin/env bash^M".
+*.sh text eol=lf
+
+# PowerShell runs on Windows.
+*.ps1 text eol=crlf
